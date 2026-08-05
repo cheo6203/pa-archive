@@ -973,23 +973,50 @@ function buildCombinedJSON(){
   return JSON.stringify({
     title: "대통령기록관 해외수집기록물 온라인 아카이브",
     generated: new Date().toISOString().slice(0,10),
-    collections: DATA.collections.map(c=>({
-      id: c.id, name: c.name, shortName: c.shortName, period: c.period,
-      itemCount: c.items.length, items: c.items,
-    })),
+    collections: DATA.collections.map(c=>{
+      const out = {
+        id: c.id, name: c.name, shortName: c.shortName, period: c.period,
+        description: c.description, itemCount: c.items.length, items: c.items,
+      };
+      if(c.publishedDate) out.publishedDate = c.publishedDate;
+      if(c.originalPdfUrl) out.originalPdfUrl = c.originalPdfUrl;
+      if(c.frontmatter) out.frontmatter = c.frontmatter;
+      if(c.reference && c.reference.length) out.reference = c.reference;
+      if(c.intro) out.intro = c.intro;
+      if(c.introPreface) out.introPreface = c.introPreface;
+      if(c.trees) out.trees = c.trees;
+      if(c.partSections) out.partSections = c.partSections;
+      if(c.presidentSections){ out.presidentSections = c.presidentSections; out.restricted = c.restricted; }
+      if(c.appendices){ out.appendices = c.appendices; out.introSections = c.introSections; }
+      if(c.appendixTables) out.appendixTables = c.appendixTables;
+      if(c.appendixImages) out.appendixImages = c.appendixImages;
+      if(c.appendixNote) out.appendixNote = c.appendixNote;
+      return out;
+    }),
   }, null, 2);
 }
 function buildCombinedCSV(){
-  // 모든 자료집 항목을 자료집 열 포함해 하나로 합침
+  // 모든 자료집 항목을 자료집 열 포함해 하나로 합침. subRecords가 있으면 세부기록물 단위로 펼침.
   const rows = [];
   const cols = ['자료집','id','제목','부제/번역제목','유형','생산년도','주요내용'];
   DATA.collections.forEach(c=>{
     c.items.forEach(it=>{
-      rows.push([
-        c.shortName, it.id, it.title, it.subtitle, it.type,
-        it.year || (it.detail&&it.detail.생산년도) || '',
-        (it.haeje&&it.haeje.summary)||'',
-      ]);
+      const sub = it.haeje && it.haeje.subRecords;
+      if(sub && sub.length){
+        sub.forEach((sr,i)=>{
+          rows.push([
+            c.shortName, `${it.id}-${i+1}`, sr.번역제목 || sr.원문제목 || it.title, it.subtitle, it.type,
+            sr.생산일자 || sr.생산년도 || it.year || '',
+            sr.주요내용 || sr.설명 || '',
+          ]);
+        });
+      } else {
+        rows.push([
+          c.shortName, it.id, it.title, it.subtitle, it.type,
+          it.year || (it.detail&&it.detail.생산년도) || '',
+          (it.haeje&&it.haeje.summary)||'',
+        ]);
+      }
     });
   });
   const esc = v=>{ v=String(v==null?'':v); return /[",\n]/.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v; };
@@ -1064,7 +1091,24 @@ function renderDataHub(main){
   main.querySelectorAll('[data-hubjson]').forEach(el=>{
     el.addEventListener('click', ()=>{
       const c = collById[el.dataset.hubjson];
-      downloadTextFile(JSON.stringify({collection:c.id, name:c.name, items:c.items}, null, 2), `${c.id}.json`, 'application/json');
+      const out = {
+        id: c.id, name: c.name, shortName: c.shortName, period: c.period,
+        description: c.description, items: c.items,
+      };
+      if(c.publishedDate) out.publishedDate = c.publishedDate;
+      if(c.originalPdfUrl) out.originalPdfUrl = c.originalPdfUrl;
+      if(c.frontmatter) out.frontmatter = c.frontmatter;
+      if(c.reference && c.reference.length) out.reference = c.reference;
+      if(c.intro) out.intro = c.intro;
+      if(c.introPreface) out.introPreface = c.introPreface;
+      if(c.trees) out.trees = c.trees;
+      if(c.partSections) out.partSections = c.partSections;
+      if(c.presidentSections){ out.presidentSections = c.presidentSections; out.restricted = c.restricted; }
+      if(c.appendices){ out.appendices = c.appendices; out.introSections = c.introSections; }
+      if(c.appendixTables) out.appendixTables = c.appendixTables;
+      if(c.appendixImages) out.appendixImages = c.appendixImages;
+      if(c.appendixNote) out.appendixNote = c.appendixNote;
+      downloadTextFile(JSON.stringify(out, null, 2), `${c.id}.json`, 'application/json');
     });
   });
   main.querySelectorAll('[data-hubcsv]').forEach(el=>{
