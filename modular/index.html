@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>대통령기록관 해외수집기록물 온라인 아카이브</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand" id="homeBtn" role="link" tabindex="0" aria-label="홈으로 이동">
+      <div class="brand-title">대통령기록관 해외수집기록물 온라인 아카이브</div>
+    </div>
+    <div class="gsearch">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="gsearchInput" type="text" placeholder="전체 자료집 통합검색…" autocomplete="off" aria-label="전체 자료집 통합검색">
+      <div class="gcount" id="gcount" aria-live="polite"></div>
+    </div>
+  </div>
+</header>
+
+<div class="breadcrumb"><div class="breadcrumb-inner" id="breadcrumb"></div></div>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="자료집 메뉴"></nav>
+  <main id="main" tabindex="-1"></main>
+</div>
+
+<footer>대통령기록관 해외수집기록물 목록집·해제집 원문을 구조화한 비공식 온라인 아카이브입니다. AI를 사용한 것이므로 일부 내용의 누락이 있을 수 있습니다. 전체 내용은 '데이터 제공' 메뉴의 원본 PDF를 다운로드 받아서 확인하시기 바랍니다.</footer>
+
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-label="기록물 상세정보">
+  <div class="panel">
+    <button class="close" id="closePanel" aria-label="닫기" tabindex="0">✕</button>
+    <div id="panelBody"></div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
