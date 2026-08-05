@@ -6,6 +6,8 @@
       "shortName": "미국편1(존슨, 카터, 레이건)",
       "period": "존슨·카터·레이건 대통령도서관 소장 한국 관련 기록물",
       "description": "미국 존슨·카터·레이건 대통령도서관에서 수집한 한국 관련 기록물입니다. 원본 자료집 목차(Ⅰ.수집기록물목록 Ⅱ.수집기록물설명 Ⅲ.소장기록물안내 Ⅳ.도서관소개) 그대로 대통령도서관별로 구분해 볼 수 있습니다.",
+      "publishedDate": "2010.12",
+      "originalPdfUrl": "https://dams.pa.go.kr/dams/DOCUMENT/2011/01/14/DOC/SRC/0104201101145543500055435017370.PDF",
       "itemCount": 556,
       "endpoints": {
         "items": "api/usa1_collection.json"
@@ -17,6 +19,8 @@
       "shortName": "유럽편1(영국, 프랑스)",
       "period": "1946-1978(영국 국가기록원·프랑스 외무부 기록관 수집기록물)",
       "description": "영국 국가기록원(TNA)과 프랑스 외무부 기록관에서 수집한 한국 관련 기록물입니다. 원본 자료집 목차(제1부 영국/제2부 프랑스, 각각 Ⅰ.목록 Ⅱ.내용 Ⅲ.소장기록물안내 Ⅳ.기관소개) 그대로 구분해 볼 수 있습니다.",
+      "publishedDate": "2011.12",
+      "originalPdfUrl": "https://dams.pa.go.kr/dams/DOCUMENT/2011/01/14/DOC/SRC/0104201101145543500055435017371.PDF",
       "itemCount": 382,
       "endpoints": {
         "items": "api/europe1.json"
@@ -28,6 +32,8 @@
       "shortName": "미국편(지미카터)",
       "period": "1977.1-1981.1(카터 재임기 관련 수집기록물)",
       "description": "지미 카터 대통령 도서관에서 수집한 기록물에 대한 해제(상세 해설) 234개 항목입니다(대분류-중분류-컬렉션-폴더의 4단계 계층 구조). 항목을 클릭하면 원문 해제 텍스트와 원문 페이지 이미지를 볼 수 있습니다.",
+      "publishedDate": "2013.10",
+      "originalPdfUrl": "https://dams.pa.go.kr/dams/DOCUMENT/2013/11/20/DOC/SRC/0104201311209114000091140013114.PDF",
       "itemCount": 234,
       "endpoints": {
         "items": "api/carter_haeje.json"
@@ -39,6 +45,8 @@
       "shortName": "미국편2(닉슨·포드)",
       "period": "1969-1977(닉슨·포드 대통령도서관 수집 한국 관련 기록물)",
       "description": "미국 닉슨·포드 대통령도서관에서 수집한 한국 관련 기록물철 602건입니다. 원본 자료집 목차 그대로 도서관별 기록물철-세부기록물 계층을 확인할 수 있습니다.",
+      "publishedDate": "2014.12",
+      "originalPdfUrl": "https://clik.nanet.go.kr/clikr-collection/policyinfo/19/42/2015/CLIKC30800126725498261_attach_1.pdf",
       "itemCount": 602,
       "endpoints": {
         "items": "api/usa2.json"
@@ -50,6 +58,8 @@
       "shortName": "미국편3(조지 부시)",
       "period": "1981.1-1993.1(부시 부통령·대통령 재임기 관련 수집기록물)",
       "description": "미국 부시(George H. W. Bush) 대통령도서관에서 수집한 한국 관련 기록물철 333건의 해제입니다. 원본 자료집 목차 그대로 총론, 기록물목록, 부록 1~8을 구분해 볼 수 있습니다.",
+      "publishedDate": "2015.12",
+      "originalPdfUrl": "https://dams.pa.go.kr/dams/PUBLICATION/2016/01/08/DOC/SRC/0204201601080000000000000000000.PDF",
       "itemCount": 333,
       "endpoints": {
         "items": "api/usa3_bush.json"
@@ -61,6 +71,8 @@
       "shortName": "유럽편2(독일)",
       "period": "1957-1979(독일연방기록청 수집 한국 관련 기록물)",
       "description": "독일연방기록청에서 수집한 한국 관련 기록물철 19건(세부기록물 602건)입니다. 원본 자료집 목차 그대로 파일철별 세부기록물을 확인할 수 있습니다.",
+      "publishedDate": "2016.11",
+      "originalPdfUrl": "https://dams.pa.go.kr/dams/DOCUMENT/2016/12/23/DOC/SRC/0104201612230933573281212011316.pdf",
       "itemCount": 19,
       "endpoints": {
         "items": "api/europe2.json"
@@ -72,6 +84,8 @@
       "shortName": "프랑스편1(국립기록관)",
       "period": "1984-1991(프랑스 국립기록관 수집 한국 관련 기록물)",
       "description": "프랑스 국립기록관에서 수집한 한국 관련 기록물철 7건(세부기록물 252건)입니다. 원본 자료집 목차 그대로 파일철-세부기록물 계층을 확인할 수 있습니다.",
+      "publishedDate": "2024.12",
+      "originalPdfUrl": "https://dams.pa.go.kr/dams/DOCUMENT/2024/12/16/DOC/SRC/0A04202412160905139417911018240.pdf",
       "itemCount": 259,
       "endpoints": {
         "items": "api/france1.json"
@@ -83,6 +97,8 @@
       "shortName": "프랑스편2(외무부기록관)",
       "period": "1973-1980(프랑스 외무부기록관 수집 한국 관련 기록물)",
       "description": "프랑스 외무부기록관에서 수집한 한국 관련 기록물철 4건(세부기록물 551건)입니다. 한국-프랑스 간 원자력 협력, 군수품 거래, 문화관계 관련 기록물이 중심입니다. ※ 원본이 이미지 스캔본이라 OCR로 추출되어 일부 오탈자가 있을 수 있습니다.",
+      "publishedDate": "2025.11",
+      "originalPdfUrl": "https://dams.pa.go.kr/dams/DOCUMENT/2025/12/10/IMG/SRC/0A01202512101657440910948011065.pdf",
       "itemCount": 555,
       "endpoints": {
         "items": "api/france2.json"

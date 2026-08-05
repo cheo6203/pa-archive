@@ -10559,6 +10559,9 @@
       }
     }
   ],
+  "publishedDate": "2025.11",
+  "originalPdfUrl": "https://dams.pa.go.kr/dams/DOCUMENT/2025/12/10/IMG/SRC/0A01202512101657440910948011065.pdf",
+  "frontmatter": "발 간 사\n대통령기록관은 2008년부터 해외에 소재한 역대 대통령의 재임 전후 주요 활동 및 정책 관련한 기록물을 수집해 오고 있습니다. 수집한 해외기록물은 목록집으로 발간하여 국민들이 활용할 수 있도록 대통령기록관누리집(www.pa.go.kr)에 게시하여 서비스하고 있습니다.\n이번에 발간하는 「역대 대통령 해외기록물 수집목록집: 프랑스편2」는 프랑스 외무부기록관에서 수집한 554건, 1,165매에 대한 내용 요약과 기록물 건명을 수록하였습니다.\n1973년부터 1980년까지 한국과 프랑스 간 원자력 협력에 관한 외교 문서가 대부분입니다. 프랑스의 한국 원전 수출 의도, 미국의 핵확산 우려와 견제, 한국 정부의 기술 자립 노력 및 외교적 대응 관련 기록물이 있습니다.\n주요 내용으로는 1970년대 한국의 핵연료 재처리시설 도입 추진과 이를 둘러싼 미국·프랑스·IAEA 간의 외교적 갈등과 견제, 한국의 원자력 발전소 건설 계획 및 이에 따른 미국과 프랑스 간 수주 경쟁, 프랑스 에어버스 항공기(A300)의 한국 판매 가능성과 계약 조건 협의 관련 자료들이 포함되어 있습니다.\n현재 가동 중인 원자력발전소가 미국, 캐나다뿐만 아니라 40여 년 전의 한국·프랑스 간 원자력 협력의 산물임을 이 목록집을 통해 알 수 있을 것입니다.\n대통령기록관은 앞으로도 해외에서 수집한 기록물의 공유와 활용을 위해 지속적인 노력을 하겠습니다. 이번 목록집이 관련 분야 연구자, 유관기관 및 국민에게 유용한 자료로 활용되기를 바랍니다.\n\n2025.11 대통령기록관장\n\n직무대리 조상민\n\n\n\n일러두기\n1. 이 목록집은 대통령기록관이 2016년 프랑스 외무부기록관에서 수집한 해외기록물을 정리 및 요약번역하여 수록한 것이다.\n2. 수록된 기록물은 1973년부터 1980년까지 프랑스 외무부에서 생산된 문서로, 한국과 프랑스 간 원자력 협력에 관한 외교문서가 주를 이룬다.\n3. 목록의 순서는 철별 관리번호 순으로 하였으며, 기록철을 기본 단위로 작성하였고 원 소장처 관리번호를 함께 기입하였다.\n4. 기록철 번호 2~4철(철 관리번호 240008363~240008365)은 원 소장처 관리번호 755 INVA 2205 12.11.5를 분철한 것이다.\n5. 기록건 제목은 원문의 표기를 따랐으며, 제목이 없는 기록물은 주요 내용을 번역하여 수록하였다. 생산일자가 표시되지 않은 기록물은 '미상'으로 표기하였다.(첨부 건명 알파벳 및 대문자의 사용은 원문을 따랐다.)",
   "trees": [
     {
       "label": "전체",
@@ -14452,6 +14455,594 @@
             }
           ]
         }
+      ]
+    }
+  ],
+  "appendixTables": [
+    {
+      "title": "부록1. 주요 수·발신자 약력 정보",
+      "columns": [
+        "성명",
+        "주요 약력",
+        "해당 정부에서의 직위",
+        "재직기간"
+      ],
+      "rows": [
+        [
+          "그자비에 뒤 코제 드 나젤 (Xavier du Cauzé de Nazelle)",
+          "주동독 프랑스대사(1981)",
+          "문화과학기술관계국 과학과장",
+          "미상"
+        ],
+        [
+          "레미 테시에 뒤 크로 (Rémi Teissier du Cros)",
+          "주한 프랑스대사(1975-1980)",
+          "주한 프랑스대사",
+          "1975-1980"
+        ],
+        [
+          "레이몽 바르 (Raymond Barre)",
+          "리옹 시장(1995-2001) 대외무역부장관(1976) 재정경제부장관(1976-1978) 총리(1976-1981)",
+          "프랑스 총리",
+          "1976-1981"
+        ],
+        [
+          "로제 뒤제 (Roger Duzer)",
+          "주라오스 프랑스대사(1976-1978) 주케냐 프랑스대사(1980-1984) 주파키스탄 프랑스대사(1984-1987) 주호주 프랑스대사(1988-1991)",
+          "미상",
+          "미상"
+        ],
+        [
+          "미셸 조베르 (Michel Jobert)",
+          "외무부장관(1973-1974) 대외무역부장관(1981-1983)",
+          "프랑스 외무부장관",
+          "1973-1974"
+        ],
+        [
+          "베르나르 폴랭 (Bernard Follin)",
+          "주한 프랑스대사(1980-1982) 주호주 프랑스대사(1985-1988)",
+          "미상",
+          "미상"
+        ],
+        [
+          "아상스 (Assens)",
+          "미상",
+          "국방 총엔지니어, 군수고등연구센터 센터장",
+          "미상"
+        ],
+        [
+          "앙리 프로망-뫼리스 (Henri Froment-Meurice)",
+          "주서독 프랑스대사(1981-1983) 주소련 프랑스대사(1979-1981)",
+          "아시아-오세아니아국 국장",
+          "미상"
+        ],
+        [
+          "오귀스탱 조르당 (Augustin Jordan)",
+          "폴란드프랑스대사(1970-1973) 주오스트리아 프랑스대사(1973-1975)",
+          "주오스트리아 프랑스 대사",
+          "1973-1975"
+        ],
+        [
+          "자크 델라루에 카롱 드 보마르셰 (Jacques Delarüe-Caron de Beaumarchais)",
+          "주영 프랑스대사(1972-1977)",
+          "주영 프랑스대사",
+          "1972-1977"
+        ],
+        [
+          "자크 코시위스코-모리제 (Jacques Kosciusko-Morizet)",
+          "UN 프랑스대표(1970-1972) 주미 프랑스대사(1972-1977)",
+          "주미 프랑스대사",
+          "1972-1977"
+        ],
+        [
+          "장 소바냐르그 (Jean Sauvagnargues)",
+          "주서독 프랑스대사(1970-1974) 주영 프랑스대사(1977-1981) 외무부장관(1974-1976)",
+          "외무부장관",
+          "1974-1976"
+        ],
+        [
+          "장 프랑수아 누아빌 (Jean-François Noiville)",
+          "주폴란드 프랑스대사(1985-1986) 주오스트리아 프랑스대사(1988-1991)",
+          "아시아-오세아니아국 국장",
+          "미상"
+        ],
+        [
+          "장 피에르 카부아 (Jean-Pierre Cabouat)",
+          "주리비아 프랑스대사(1975-1979) 주캐나다 프랑스대사(1984-1987)",
+          "미상",
+          "미상"
+        ],
+        [
+          "장-다비드 레비트 (Jean-David Levitte)",
+          "UN 프랑스대표(1999-2000) 주미 프랑스대사(2002-2007)",
+          "미상",
+          "미상"
+        ],
+        [
+          "장-마리 르 브르통 (Jean-Marie Le Breton)",
+          "주불가리아 프랑스대사(1983-1986) 주루마니아 프랑스대사(1987-1990) 주포르투갈 프랑스대사(1990-1992)",
+          "주캐나다 프랑스대사관 참사관",
+          "1974-1978"
+        ],
+        [
+          "크리스티앙 도말 (Christian D' Aumale)",
+          "외무부 양자협정과 책임자(1968-1978)",
+          "전권공사 겸 외무부 양자협정과 책임자",
+          "1968-1978"
+        ],
+        [
+          "클로드 마르탱 (Claude Martin)",
+          "주OECD 프랑스대사(1978-1982) 주중 프랑스대사(1990-1993) 주독일 프랑스대사(1999-2007)",
+          "외무부장관실 기술고문",
+          "미상"
+        ],
+        [
+          "클로드 필롱 (Claude Pilon)",
+          "미상",
+          "주한 프랑스대사관 상무관",
+          "미상"
+        ],
+        [
+          "페로 (F. Perrot)",
+          "미상",
+          "프랑스 원자력청 국제관계과장",
+          "미상"
+        ],
+        [
+          "프랑수아 르페브르 드 라불레 (François Lefebvre de Laboulaye)",
+          "주브라질 프랑스대사(1968-1972) 주일 프랑스대사(1972-1975) 주미 프랑스대사(1977-1981)",
+          "주일 프랑스대사",
+          "1972-1975"
+        ],
+        [
+          "피에르 랑디 (Pierre Landy)",
+          "주한 프랑스대사(1971-1975)",
+          "주한 프랑스대사",
+          "1971-1975"
+        ],
+        [
+          "필립 루에 (Philippe Louët)",
+          "주터키 프랑스대사(1985-1988)",
+          "프랑스 외무부 원자력과 부팀장",
+          "미상"
+        ],
+        [
+          "필립 에스페르 (Philippe Esper)",
+          "프랑스 국방부 국제업무국 부국장(1973-1975) 프랑스산업총국 부국장(1976-1978)",
+          "프랑스 산업총국 부국장",
+          "1976-1978"
+        ],
+        [
+          "필립 페리에 드라 바티 (Philippe Perrier de La Bâthie)",
+          "주잠비아 프랑스대사(1995-1998) 주나미비아 프랑스대사(2002-2006)",
+          "주한 프랑스대리대사",
+          "미상"
+        ]
+      ]
+    },
+    {
+      "title": "부록2. 기관 및 협약명 약어",
+      "columns": [
+        "기관 및 협약명 약어",
+        "정식 영문명칭",
+        "번역",
+        "비고"
+      ],
+      "rows": [
+        [
+          "ACDA",
+          "Arms Control and Disarmament Agency",
+          "미국 군비규제군축청",
+          "프랑스어: Agence pour la Contrôle des Armements et le Désarmement"
+        ],
+        [
+          "ACTIM",
+          "Agence pour la Coopération Technique, Industrielle et Économique",
+          "기술산업경제협력기구",
+          ""
+        ],
+        [
+          "ADD",
+          "Agency for Defense Development",
+          "한국 국방과학연구소",
+          "프랑스어 표기: Agence du Développement de Défense, Agence de Développement de la Défense, Agence coréenne pour le Développement del la Défense"
+        ],
+        [
+          "AECL",
+          "Atomic Energy of Canada Ltd",
+          "캐나다원자력공사",
+          ""
+        ],
+        [
+          "ANL",
+          "Argonne National Laboratory",
+          "미국 아르곤국립연구소",
+          ""
+        ],
+        [
+          "BFCE",
+          "Banque Française du Commerce Extérieur",
+          "프랑스대외무역은행",
+          ""
+        ],
+        [
+          "BNFL",
+          "British Nuclear Fuels Limited",
+          "영국기업(핵연료)",
+          ""
+        ],
+        [
+          "BRINCO",
+          "British Newfoundland Development Corporation",
+          "브리티시뉴펀들랜드개발회사",
+          ""
+        ],
+        [
+          "CANDU",
+          "Canada Deuterium Uranium",
+          "캐나다형원자로",
+          "캐나다원자력공사(AECL, Atomic Energy of Canada Ltd.)"
+        ],
+        [
+          "CAP",
+          "Centre d'analyse et de prévision",
+          "분석전망센터",
+          "현재 CAPS(Centre d'Analyse, de Prévision et de Stratégie)"
+        ],
+        [
+          "CEA",
+          "Commissariat à l'Énergie Atomique",
+          "프랑스 원자력청",
+          ""
+        ],
+        [
+          "CECI",
+          "Centre Européen du Commerce Internaional",
+          "유럽국제무역센터",
+          ""
+        ],
+        [
+          "CERCA",
+          "Compagnie pour l'Étude et la Réalisation de Combustibles Atomiques",
+          "세르카",
+          "프랑스기업(원자력)"
+        ],
+        [
+          "CHEAr",
+          "Centre des Hautes Études de l'Armement",
+          "군사고등연구센터",
+          ""
+        ],
+        [
+          "CIEEMG",
+          "Commission Interministérielle pour l'Étude des Exportations de Matériels de Guerre",
+          "전쟁물자수출연구를위한 범부처위원회",
+          "원문의 CIEMG는 '전쟁물자수출연구를위한범부처위원회(CIEEMG)'의 오기임."
+        ],
+        [
+          "CMN",
+          "Constructions Mécaniques de Normandie",
+          "노르망디조선소",
+          "프랑스기업(조선)"
+        ],
+        [
+          "CNEXO",
+          "Centre National Pour l'Exploitation des Oceans",
+          "국립해양탐사센터",
+          ""
+        ],
+        [
+          "COCOM",
+          "Coordinating Committee for Multilateral Export Controls",
+          "코콤, 대공산권수출통제위원회",
+          ""
+        ],
+        [
+          "COFACE",
+          "Compagnie Française d'Assurance pour le Commerce Extérieur",
+          "프랑스대외무역보험사",
+          "프랑스기업(보험)"
+        ],
+        [
+          "COGEMA",
+          "Compagnie Générale des Matières nucléaires",
+          "코제마",
+          "프랑스기업(원자력)"
+        ],
+        [
+          "DAI",
+          "Direction des Affaires Internationales",
+          "국제국",
+          ""
+        ],
+        [
+          "DGA",
+          "Délégation Générale pour l'Armement",
+          "군수관련총대표단",
+          "1977년 군수관련장관급 대표단(DMA)을 대체함"
+        ],
+        [
+          "DGEMP",
+          "Direction Générale de l'Énergie et des Matières Premières",
+          "프랑스 에너지원자재총국",
+          ""
+        ],
+        [
+          "DGRCST",
+          "Direction Générale des Relations Culturelles, Scientifiques et Techniques",
+          "문화과학기술관계국",
+          ""
+        ],
+        [
+          "DMA",
+          "Délégation Ministérielle à l'Armement",
+          "군수관련장관급대표단",
+          ""
+        ],
+        [
+          "DREE",
+          "Direction des Relations Économiques Extérieures",
+          "대외경제관계국",
+          ""
+        ],
+        [
+          "ECGD",
+          "Export Credits Guarantee Department",
+          "영국수출신용보증기구",
+          "프랑스어: Service Britannique de Garantie des Crédits à l'Exportation"
+        ],
+        [
+          "EDF",
+          "Électricité de France",
+          "프랑스전력공사",
+          ""
+        ],
+        [
+          "EPB",
+          "Economic Planning Board",
+          "한국 경제기획원",
+          ""
+        ],
+        [
+          "ERDA",
+          "Energy Research and Development Administration",
+          "미국 에너지연구개발청",
+          ""
+        ],
+        [
+          "ESMN",
+          "École Nationale Supérieure Maritime",
+          "국립고등해양학교",
+          ""
+        ],
+        [
+          "EURODIF",
+          "European Gaseous Diffusion Uranium Enrichment Consortium",
+          "유로디프",
+          "프랑스기업(에너지)"
+        ],
+        [
+          "EXIM-BANK",
+          "Export Import Bank",
+          "수출입은행",
+          ""
+        ],
+        [
+          "FMS",
+          "Foreign Military Sales",
+          "대외군사판매",
+          ""
+        ],
+        [
+          "GEC",
+          "General Electric Company",
+          "제너럴 일렉트릭 컴퍼니",
+          "영국기업(전기전자), 현재는 해체"
+        ],
+        [
+          "HWR",
+          "Heavy-Water Reactor",
+          "가압수형중수로",
+          ""
+        ],
+        [
+          "IAEA",
+          "International Atomic Energy Agency",
+          "국제원자력기구",
+          "프랑스어: AIEA, Agence Internationale de l'Énergie Atomique"
+        ],
+        [
+          "IBRD",
+          "International Bank for Reconstruction and Development",
+          "국제부흥개발은행",
+          "프랑스어: BIRD, Banque Internationale pour la Reconstruction et le Développement"
+        ],
+        [
+          "IISS",
+          "International Institution for Strategic studies",
+          "국제전략문제연구소",
+          ""
+        ],
+        [
+          "IMF",
+          "International Monetary Fund",
+          "국제통화기금",
+          "프랑스어: FMI(Fonds Monétaire International)"
+        ],
+        [
+          "INER",
+          "Institute of Nuclear Energy Research",
+          "대만원자력연구소",
+          "프랑스어: Institut de Recherches Nucléaire Taïwanais"
+        ],
+        [
+          "KAERI",
+          "Korea Atomic Energy Research Institute",
+          "한국원자력연구소",
+          "현 한국원자력연구원"
+        ],
+        [
+          "KDI",
+          "Korea Development Institute",
+          "한국개발연구원",
+          ""
+        ],
+        [
+          "KECO",
+          "Korea Electric Company",
+          "한국전력주식회사",
+          "현 한국전력공사(KEPCO)"
+        ],
+        [
+          "KORALU",
+          "",
+          "한국알루미늄",
+          "현 울산알루미늄"
+        ],
+        [
+          "KOWACO",
+          "Korea Water Resources Corporation",
+          "한국수자원공사",
+          ""
+        ],
+        [
+          "KRISO",
+          "Korea Research Institute of Ships and Ocean engineering",
+          "선박해양플랜트연구소",
+          ""
+        ],
+        [
+          "KTMI",
+          "Korea-Tacoma Marine Industries",
+          "코리아타코마조선공업",
+          "한국기업(조선업, 한미합작)"
+        ],
+        [
+          "KWU",
+          "Kraftwerk Union",
+          "KWU",
+          "독일기업(원자력)"
+        ],
+        [
+          "LMT",
+          "Lockheed Martin",
+          "록히드마틴",
+          ""
+        ],
+        [
+          "MAP",
+          "Military Assistance Program",
+          "군사원조프로그램",
+          ""
+        ],
+        [
+          "MOST",
+          "Ministry of Science and Technology",
+          "한국 과학기술처",
+          ""
+        ],
+        [
+          "NPT",
+          "Nuclear Non Proliferation Treaty",
+          "핵확산금지조약",
+          "프랑스어: TNP, Traité de Non-Prolifération Nucléaire"
+        ],
+        [
+          "NRC",
+          "Nuclear Regulatory Commission",
+          "미국 원자력규제위원회",
+          "프랑스어: Comité américain de contrôle nucléaire"
+        ],
+        [
+          "NSSS",
+          "Nuclear Steam Supply System",
+          "핵증기공급계통",
+          ""
+        ],
+        [
+          "OFEMA",
+          "Office Français d'Exportation de Matériels Aéronautiques",
+          "오페마, 프랑스항공장비수출공사",
+          "본문의 AFEMA는 OFEMA의 오기임"
+        ],
+        [
+          "OFMI",
+          "Oriental Fire and Marine Insurance",
+          "동양화재해상보험",
+          "한국기업, 현 메리츠화재"
+        ],
+        [
+          "PWR",
+          "Pressurized Water Reactor",
+          "가압수형원자로",
+          "미국 Westinghouse 개발"
+        ],
+        [
+          "RFA",
+          "République Fédérale d'Allemagne",
+          "서독",
+          ""
+        ],
+        [
+          "SAGEM",
+          "Société d' Applications Générales de l'Électricité et de la Mécanique",
+          "사젬",
+          "프랑스기업(통신, 전자) 원문의 SACEM은 SAGEM의 오기"
+        ],
+        [
+          "SEP",
+          "Société Européenne de Propulsion",
+          "",
+          "프랑스기업(군수)"
+        ],
+        [
+          "SGN",
+          "Saint-Gonain-Techniques Nouvelles",
+          "생고뱅",
+          "프랑스기업(건축, 원자력) Société Généralepourlestechniques Nouvelles (1977년이후)"
+        ],
+        [
+          "SNCF",
+          "Société Nationale des Chemins de fer Français",
+          "",
+          "프랑스기업(철도회사)"
+        ],
+        [
+          "SNIAS",
+          "Societe Nationale Industrielle Aérospatiale",
+          "아에로스파시알",
+          "프랑스기업(항공)"
+        ],
+        [
+          "SNPE",
+          "Société Nationale des Poudres et Explosifs",
+          "프랑스 화약폭발물회사",
+          "프랑스기업(화학)"
+        ],
+        [
+          "SOFINEL",
+          "Société Française d'Ingénierie Électronucléaire et d'Assistance à l'Exportation",
+          "소피넬",
+          "프랑스기업(원자력)"
+        ],
+        [
+          "SOFMA",
+          "Société Française de Matériels d'Armement",
+          "소프마",
+          "프랑스기업(군수)"
+        ],
+        [
+          "SOFREXAN",
+          "Société Française d'Exportation d'Armement Naval",
+          "소프렉산, 프랑스해군무기수출회사",
+          ""
+        ],
+        [
+          "TRR",
+          "Taoyuan Research Reactor",
+          "타오위안 연구용 원자로",
+          ""
+        ]
       ]
     }
   ]

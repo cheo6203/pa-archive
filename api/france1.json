@@ -4948,6 +4948,9 @@
       }
     }
   ],
+  "publishedDate": "2024.12",
+  "originalPdfUrl": "https://dams.pa.go.kr/dams/DOCUMENT/2024/12/16/DOC/SRC/0A04202412160905139417911018240.pdf",
+  "frontmatter": "발 간 사\n대통령 기록관은 설립 초기인 2008년부터 해외에 소재한 역대 대통령의 재임 전후 주요 활동과 정책 등과 관련한 기록물을 수집해 오고 있습니다. 수집한 해외기록물은 목록집을 발간하여 국민들이 활용할 수 있도록 대통령기록관 누리집(www.pa.go.kr)에 게시하여 서비스하고 있습니다.\n이번에 발간하는 「역대 대통령 해외기록물 수집목록집 : 프랑스편1」은 프랑스 국립기록관에서 수집한 252건 1,205매에 대한 내용 요약과 기록물 건명을 수록하였습니다.\n1980년대 후반 한·불 과학기술 교류 협력, 프랑스 총리의 한국방문과 한·불 과학기술부 장관 회담, 한국의 경제현황, 한국의 대외관계(남북관계, 북방외교, 한미, 한일, 한중관계), 전두환 대통령과 노태우 대통령의 프랑스 방문 관련 기록물이 있습니다.\n주요 내용으로는 프랑스 총리 한국방문 준비 보고, 한국의 원자력 발전소 11호기와 12호기 건설 경쟁공고 를 통한 원자력 분야 자립성 확보, 서울-부산간 고속화 철도 사업, 통신위성 및 우주항공 분야의 개발을 위한 프랑스 국립우주연구소와의 교류, 한국 과학자들과 엔지니어들의 박사후 과정 연수, 서울예술센터 건축에 프 랑스 문화예술 센터의 현대적 기술 및 운영 도입 등 경제산업, 과학기술, 문화예술 등 다양한 분야에 있어 프 랑스와의 관계를 강화하려는 자료들이 포함되어 있습니다.\n현재 우리 생활 주변에서 쉽게 접할 수 있는 KTX(서울-부산간 고속화 철도), 예술의 전당(서울예술센터)도 40여년 전의 한국과 프랑스의 교류 협력의 결과임을 이 목록집을 통해 발견할 수 있을 것입니다.\n대통령기록관은 앞으로도 해외에서 수집한 기록물의 공유와 활용을 위해 지속적인 노력을 하겠습니다.\n본 목록집이 관련 분야 연구자, 유관기관 및 국민에게 유용한 자료로 활용되기를 기대합니다.\n2024년 12월 대통령기록관장\n\n\n\n일러두기\n1. 이 목록집은 대통령기록관이 2016년 프랑스 국립기록관(Archives Nationales)에서 수집한 해외 기록물을 정리 및 요약·번역하여 수록하였다.\n2. 수 록된 기록물은 1984년부터 1991년까지 생산된 문서들로 전두환 대통령과 노태우 대통령의 프랑스 방문 및 1980년대 후반 한불 과학기술 교류 협력에 관한 내용이 주를 이룬다.\n3. 목 록의 순서는 철별 관리번호 순으로 하였고 기록철을 기본 단위로 작성하였으며, 원 소장처 상자 번호와 대통령기록관 관리번호를 함께 수록하였다.\n4. 기 록철 번호 1~4(PZA0008000~PZA0008003)는 원 소장처의 1개 철(Liasse 2)을 분철한 것이며, 5~7(PZA0008004~PZA0008006)도 1개 철(Liasse 3)을 분철한 것이다. (각 철별 상위계층명 참고)\n5. 기 록건 제목은 원문의 표기를 따랐으며 제목이 없는 기록물은 중요 내용을 번역하여 수록하였고, 생산일자가 표시되지 않은 기록물은 미상으로 표시하였다. (철·건명 알파벳 대소문자의 사용은 원문을 그대로 따랐다)",
   "trees": [
     {
       "label": "전체",
@@ -6772,6 +6775,804 @@
             }
           ]
         }
+      ]
+    }
+  ],
+  "appendixTables": [
+    {
+      "title": "부록1. 주요 수·발신자 약력 정보",
+      "columns": [
+        "성명",
+        "주요 약력",
+        "해당 정부에서의 직위",
+        "재직기간"
+      ],
+      "rows": [
+        [
+          "다니엘 사코트 (DanielSacotte)",
+          "국립우주연구소 과학프로그램 부서장 (ChefdelaDivisiondesprogrammesscientifiquesauCN ES,1981-1984) 연구기술부기술고문 (ConseillertechniqueauprèsduministredelaRechercheetd elaTechnologie,1984-1986) 국립우주연구소부소장 (Directeur-généraladjointduCNES,1996-1997) 유럽우주국행정처장 (Directeurdel’Administrationàl’ESA,1997-2004)",
+          "연구기술부 기술고문",
+          "1984-1986"
+        ],
+        [
+          "롤랑 뒤마 (RolandDumas)",
+          "유럽부장관 (1983-1984) 대외관계부장관 (1984-1986) 내무부장관 (1988-1993) 외무부장관 (1988-1993)",
+          "대외관계부 장관",
+          "1984-1986"
+        ],
+        [
+          "마리-노엘 파비에 (Marie- NoëlleFavier)",
+          "연구기술부 과학문화부서 부서장 (ChefdudépartementCulturescientifiqueauministèredelar echerche,1984-1998) 개발연구소커뮤니케이션소장 (Directricedelacommunicationàl’Institutderecherchepourl edéveloppement,1998-2014)",
+          "연구기술부 과학문화 부서 부서장",
+          "1984-1998"
+        ],
+        [
+          "미셸 라브리 (MichelLavérie)",
+          "중앙원자력시설안전청 부청장 (ChefadjointduServiceCentraldeSûretédesInstallationsNu cléaires,1979-1986) 중앙원자력시설안전청청장 (lechefduServiceCentraldeSûretédesInstallationsNucléair es,1986-1991)",
+          "중앙원자력시설 안전청 부청장 (ChefadjointduService CentraldeSûretédesIns tallationsNucléaires)",
+          "1979-1986"
+        ],
+        [
+          "미셸 콩발 (MichelCombal)",
+          "주베트남사회주의공화국 프랑스대사 (1978-1981) 대외관계부아시아오세아니아국국장 (1982-1986) 주중국프랑스대사 (1986-1989) 주아일랜드프랑스대사 (1990-1992)",
+          "대외관계부 아시아오세아니아국 국장",
+          "1982-1986"
+        ],
+        [
+          "앙드레 바에앙스 (AndréBaeyens)",
+          "주한 프랑스대사 (1982-1985) UN빈사무국프랑스대표 (ReprésentantpermanentdelaFranceàl'OfficedesNationsu niesàVienne,1985-1990) 주뉴욕프랑스총영사 (ConsulatgénéraldeFranceàNewYork,1993-1995)",
+          "주한 프랑스대사",
+          "1982-1985"
+        ],
+        [
+          "에디트 크레송 (ÉdithCresson)",
+          "농업부장관 (Ministredel'Agriculture,1981-1983) 무역관광부장관 (MinistreduCommerceextérieuretduTourisme,1983-1984) 산업재편무역부장관 (MinistèreduRedéploiementindustrieletduCommerceexté rieur,1984-1986) 프랑스총리 (Premièreministrefrançaise,1991-1992)",
+          "산업재편무역부 장관",
+          "1984-1986"
+        ],
+        [
+          "에르베 무랑 (HervéMouren)",
+          "BULL社 해외 상업망 부전무이사 (directeurgénéraladjointdu réseau commercial overseas, 1986-1987) BULL社벨기에-룩셈부르크전무이사 (directeurgénéraldeBullBelgiqueetLuxembou rg,1987-1993)",
+          "BULL社 국제부서 전략발전팀장 (directeurstratégieetdé veloppementduRésea uInternational)",
+          "1983-1986"
+        ],
+        [
+          "위베르 퀴리앙 (HubertCurien)",
+          "연구기술부장관 (MinistredelaRechercheetdelaTechnologie,1984-1986) 기술부특임장관 (MinistredéléguéchargédelaRecherche,1988) 연구기술부장관 (MinistredelaRechercheetdelaTechnologie,1988-1992) 연구우주부장관 (MinistredelaRechercheetdel'Espace,1992-1993)",
+          "연구기술부 장관",
+          "1984-1986 1988-1992"
+        ],
+        [
+          "위베르 포르크노 드 라 포르텔 (Hubert Forquenotdela Fortelle)",
+          "주한 프랑스대사 (1987-1991) 주사우디프랑스대사 (1994-1998) 주노르웨이프랑스대사 (2003-2005)",
+          "주한 프랑스대사",
+          "1987-1991"
+        ],
+        [
+          "자크 바레 (Jacques Varet)",
+          "주 중국 프랑스 대사관 과학기술고문 (Conseiller pour la science et la technologie à l'ambassade de France en Chine, 1986-1989) 에너지광물자원과 팀장 (Chef du département énergie, ressources minérales et technologies de l'environnement au Ministère de la Recherche (Ministère H.Curien), 1989-1992)",
+          "에너지광물 자원과 팀장",
+          "1989-1992"
+        ],
+        [
+          "장 베르나르 우브리외 (JeanBernard Ouvrieu)",
+          "원자력청 국제관계국 국장 (DirecteurdesrelationsinternationalesauCommissariatàl'é nergieatomique,1980-1985) 주한프랑스대사 (1985-1987) 주일본프랑스대사 (1993-1998)",
+          "원자력청 국제관계국 국장",
+          "1980-1985"
+        ],
+        [
+          "장 시로타 (JeanSyrota)",
+          "에너지원자재총국 국장 (Directeurgénéraldel'énergieetdesmatièrespremièr es,1982-1988) 광산평의회부의장 (Vice-présidentduConseilgénéraldesmines,1993-1997)",
+          "에너지원자재총국 국장",
+          "1982-1988"
+        ],
+        [
+          "장-파스칼 르 프랑 (Jean- PascalLeFranc)",
+          "연구기술부 기술고문 (ConseillertechniqueauCabinetduMinistreHubertCurien( MinistèredelarechercheetdelaTechnologie),1989-1993) 국립우주연구소국제관계부서부부서장 (DirecteuradjointdesRelationsInternationales CentreNatio nald'EtudesSpatiales,1999-2004)",
+          "",
+          ""
+        ],
+        [
+          "제라르 르농 (GérardRenon)",
+          "원자력청 부청장 (AdministrateurgénéraladjointduCEA,1982) 원자력청청장 (AdministrateurgénéralduCEA,1983-1986) 지질광물자원연구원원장 (PrésidenceduBRGM,1986-1988) SNECMA회장 (PrésidentdelaSNECMA,1992-1994) * SNECMA (SociétéNationaled'ÉtudeetdeConstructiondeMoteursd'Av iation)는프랑스항공기관련기업으로오늘날사프랑항공엔진 (SafranAircraftEngines)",
+          "원자력청 청장",
+          "1983-1986"
+        ],
+        [
+          "제롬 파스키에 (Jérome Pasquier)",
+          "주 크로아티아 프랑스 대사 (2009-2012) 주한 프랑스 대사 (2012-2015)",
+          "주한 프랑스대사관 과학기술협력 상무관",
+          "1988-1992"
+        ],
+        [
+          "크리스티앙 드 토르카 (Christiande Torquat)",
+          "중앙원자력시설안전청 청장 (lechefduServiceCentraldeSûretédesInstallationsNucléair es,1977-1986)",
+          "중앙원자력시설 안전청 청장",
+          "1977-1986"
+        ],
+        [
+          "크리스티앙 마세 (ChristianMasse)",
+          "주일프랑스대사 (2011-2014) 외무부사무처처장 (SecrétairegénéralduministèredesAffairesétrangères, 2014-2017)",
+          "대외관계부 (MinistèredesRelations Exterieures) 원자력우주과책임자 (directeurdesQuestio nsAtomiquesetSpatial es)",
+          "1984-1987"
+        ],
+        [
+          "클로드 마르탱 (ClaudeMartin)",
+          "주중프랑스대사 (1990-1993) 주독일프랑스대사 (1999-2007)",
+          "",
+          ""
+        ],
+        [
+          "클로드 프레자크 (ClaudeFréjacques)",
+          "프랑스 국립과학연구소 소장 (1981-1989)",
+          "프랑스 국립과학 연구소 소장",
+          "1981-1989"
+        ],
+        [
+          "티에리 살모나 (ThierrySalmona)",
+          "에너지원자재총국 기술고문 (ConseillertechniquedelaDirectionGénéraledel'Énergieetd esMatièresPremières,1980-1988)",
+          "에너지원자재총국 기술고문",
+          "1980-1988"
+        ],
+        [
+          "티에리 오드릭 (ThierryAudric)",
+          "과학기술협력문화고문 (ConseillerCultureletdeCoopérationScientifiqueet Technique) * 1984년 국립현대미술관에서 주한 프랑스대사관 주최로 열린 ‘프랑스성화전’ 안내책자에는 티에리 오드릭의 직책이 문정 참사관으로 소개되어 있음",
+          "",
+          ""
+        ],
+        [
+          "파스칼 뫼니에 (PascalMeunier)",
+          "외무부 아시아오세아니아국 극동아시아과 차장 (1989-1992) 주아제르바이잔프랑스대사 (2012-2015) 주프랑스조지아대사 (2016-2019)",
+          "외무부 아시아 오세아니아국 극동아시아과 차장 (Sous-directeurd' Extrême- Orientàladirectiond' Asie-Océanie)",
+          "1989-1992"
+        ],
+        [
+          "프레데릭 달레스트 (Frédéricd'Alle",
+          "국립우주연구소 소장 (Directeurgénéraldu Centrenationald'étudesspatial es,1982-1989) 아리안스페이스최고경영자 (Président-directeurgénérald’Arianespace,1980-1990)",
+          "국립우주연구소장",
+          "1982-1989"
+        ],
+        [
+          "필립 젤러 (PhilippeZeller)",
+          "주 헝가리 프랑스 대사 (2004-2007) 주캐나다프랑스대사 (2011-2015)",
+          "",
+          ""
+        ]
+      ]
+    },
+    {
+      "title": "부록2. 기관 및 협약명 약어",
+      "columns": [
+        "기관명·협약 명 등 약어",
+        "정식 영문명칭",
+        "번역",
+        "비고"
+      ],
+      "rows": [
+        [
+          "ACTIM",
+          "Agence pour la coopération technique, industrielle et économique",
+          "기술산업경제협력공사",
+          ""
+        ],
+        [
+          "ADP",
+          "Aéroport de Paris",
+          "파리공항관리공단",
+          ""
+        ],
+        [
+          "AECL",
+          "Atomic Energy of Canada Limited",
+          "캐나다원자력공사",
+          ""
+        ],
+        [
+          "AELE",
+          "L'Association européenne de libre- échange",
+          "유럽자유무역연합",
+          ""
+        ],
+        [
+          "AFAA",
+          "Association Française d'Action Artistique",
+          "프랑스예술진흥협회",
+          ""
+        ],
+        [
+          "AFME",
+          "Agence française pour la maîtrise de l’ énergie",
+          "프랑스에너지관리청",
+          ""
+        ],
+        [
+          "AGF",
+          "Assurance Générale de France",
+          "프랑스 국영보험회사",
+          ""
+        ],
+        [
+          "AIEA",
+          "Agence internationale de l'énergie atomique",
+          "국제원자력기구",
+          "영문명 IAEA(International Atomic Energy Agency)"
+        ],
+        [
+          "AMF",
+          "Accord Multifibres",
+          "다자간섬유협정",
+          ""
+        ],
+        [
+          "ANRED",
+          "Agence nationale pour la récupération et l'élimination des déchets",
+          "국립폐기물처리자원화공사",
+          ""
+        ],
+        [
+          "ANSEA",
+          "Association des Nations du Sud-Est Asiatique",
+          "동남아시아국가연합",
+          "영문명 ASEAN"
+        ],
+        [
+          "APEC",
+          "Asia-Pacific Economic Cooperation",
+          "아시아태평양경제협력체",
+          ""
+        ],
+        [
+          "APRODI",
+          "Association pour la promotion et le développement industriel",
+          "산업진흥발전협회",
+          ""
+        ],
+        [
+          "BAL",
+          "Bureau d'Action Linguistique",
+          "언어활동국",
+          ""
+        ],
+        [
+          "BCEOM",
+          "Bureau Central d'Etudes pour les Equipements d'Outre-mer",
+          "해외시설물중앙연구소",
+          ""
+        ],
+        [
+          "BIE",
+          "Bureau International des Expositions",
+          "국제박람회기구",
+          ""
+        ],
+        [
+          "BMFT",
+          "Bundesministerium für Forschung und Technologie",
+          "독일연방연구기술부",
+          "독일연방연구기술부 (BMFT)는 1994년 이후에 는 독일연방교육연구부 (Bundesministerium für Bildung und Forschung, BMBF)로 명칭이 바뀜"
+        ],
+        [
+          "BRGM",
+          "Bureau de Recherches Géologiques et Minières",
+          "지질광물자원연구원",
+          ""
+        ],
+        [
+          "BTP",
+          "le Bâtiment et les Travaux Publics",
+          "건설토목분야",
+          ""
+        ],
+        [
+          "CDF",
+          "Charbonnages de France",
+          "프랑스석탄공사",
+          ""
+        ],
+        [
+          "CEA",
+          "Commissariat à l'énergie atomique",
+          "원자력청",
+          ""
+        ],
+        [
+          "CECA",
+          "Communauté Européenne du Charbon et de l'Acier",
+          "유럽석탄철강공동체",
+          ""
+        ],
+        [
+          "CEDUST",
+          "Centre de documentation universitaire, scientifique et technique",
+          "대학·과학·기술자료센터",
+          ""
+        ],
+        [
+          "CEE",
+          "Commuauté Économique Européenne",
+          "유럽경제공동체",
+          "영문명 EEC"
+        ],
+        [
+          "CEMAGREF",
+          "Centre national du machinisme agricole du génie rural des eaux et des forêts",
+          "프랑스 국립농기계공학물숲연구소",
+          ""
+        ],
+        [
+          "CESAP",
+          "La Commission économique et sociale pour l'Asie et le Pacifique",
+          "아시아태평양경제사회 위원회",
+          ""
+        ],
+        [
+          "CETEL",
+          "Cycle d’Enseignement en Télédétection",
+          "원격탐사교육과정",
+          ""
+        ],
+        [
+          "CFCE",
+          "Centre français du commerce extérieur",
+          "프랑스대외무역센터",
+          ""
+        ],
+        [
+          "CGDK",
+          "The Coalition Government of Democratic Kampuchea",
+          "민주캄푸챠연합정부",
+          "캄보디아의 임시정부 이름"
+        ],
+        [
+          "CGM",
+          "Compagnie Générale Maritime",
+          "해상운송회사",
+          ""
+        ],
+        [
+          "CMCR",
+          "Compagnie Maritime des Chargeurs Réunis",
+          "해상합동운송사",
+          ""
+        ],
+        [
+          "CNEC",
+          "Centre National d'Enseignement par Correspondance",
+          "국립방송통신교육센터",
+          ""
+        ],
+        [
+          "CNES",
+          "Centre national d'études spatiales",
+          "국립우주연구소",
+          ""
+        ],
+        [
+          "CNET",
+          "Centre National d'Études des Télécommunications",
+          "국립정보통신연구소",
+          ""
+        ],
+        [
+          "CNRS",
+          "Centre National de la Recherche Scientifique",
+          "국립과학연구소",
+          ""
+        ],
+        [
+          "COCOM",
+          "Coordinating Committee for Multilateral Export Controls",
+          "대공산권수출통제위원회",
+          ""
+        ],
+        [
+          "CODEV",
+          "Coopération au Développement",
+          "협력개발",
+          ""
+        ],
+        [
+          "Comité BOP",
+          "Comité de la balance des paiements",
+          "국제수지위원회",
+          ""
+        ],
+        [
+          "DAI",
+          "Direction des Affaires Internationale",
+          "국제국",
+          ""
+        ],
+        [
+          "DCST",
+          "Direction de la Coopération Scientifique et Technique",
+          "과학기술협력국",
+          ""
+        ],
+        [
+          "DCSTD",
+          "Direction de la coopération scientifique et technique et du développement",
+          "과학기술협력개발국",
+          ""
+        ],
+        [
+          "DCSTE",
+          "Direction du Developpement de la Coopération Scientifique Technique et Educative",
+          "과학기술교육협력발전국",
+          ""
+        ],
+        [
+          "DGE",
+          "Direction Générale des Entreprises",
+          "프랑스기업청",
+          ""
+        ],
+        [
+          "DGEMP",
+          "Direction Générale de l'Énergie et des Matières Premières",
+          "에너지원자재총국",
+          ""
+        ],
+        [
+          "DGRCST",
+          "Direction générale des Relations culturelles, scientifiques et techniques",
+          "문화과학기술관계총국",
+          ""
+        ],
+        [
+          "DIELI",
+          "Direction des Industries électroniques et de l'informatique",
+          "전자산업전산국",
+          ""
+        ],
+        [
+          "DOE",
+          "Department Of Energy",
+          "미국 에너지부",
+          ""
+        ],
+        [
+          "DREE",
+          "Direction des Relations Économiques Extérieures",
+          "대외경제관계국",
+          ""
+        ],
+        [
+          "EDF",
+          "Électricité de France",
+          "프랑스전력공사",
+          ""
+        ],
+        [
+          "ENSMN",
+          "École Nationale Supérieure des Mines de Nancy",
+          "낭시 국립광업학교",
+          ""
+        ],
+        [
+          "ESIT",
+          "École Supérieure d'Interprètes et de Traducteurs",
+          "통역번역대학원",
+          ""
+        ],
+        [
+          "ESPRIT",
+          "European Society for Periodical Research",
+          "에스프리",
+          "범유럽 정보통신연구개발"
+        ],
+        [
+          "FCIA",
+          "Foreign Capital Inducement Act",
+          "외자도입법(한국)",
+          ""
+        ],
+        [
+          "FEFC",
+          "Far Eastern Freight Conference",
+          "극동구주운임동맹",
+          ""
+        ],
+        [
+          "FIAS",
+          "The French Institutes for Advanced Study Fellowship Programme",
+          "프랑스고등연구펠로쉽 연구소",
+          ""
+        ],
+        [
+          "FRDA",
+          "Fisheries Research Development Agency",
+          "어업연구개발원",
+          ""
+        ],
+        [
+          "GATT",
+          "l’Accord général sur les tarifs douaniers et le commerce",
+          "관세및무역에관한일반협정",
+          ""
+        ],
+        [
+          "GDF",
+          "Gaz de France",
+          "프랑스국영가스회사",
+          ""
+        ],
+        [
+          "GIFAS",
+          "Groupement des Industries françaises aéronautiques et spatiales",
+          "프랑스항공우주산업협회",
+          ""
+        ],
+        [
+          "IFP",
+          "Institut Français du Pétrole",
+          "프랑스석유연구원",
+          ""
+        ],
+        [
+          "IFREMER",
+          "Institut français de recherche pour l'exploitation de la mer",
+          "프랑스국립해양개발연구원",
+          ""
+        ],
+        [
+          "INALCO",
+          "Institut National des Langues et Civilisations Orientales",
+          "국립동양언어문화대학교",
+          ""
+        ],
+        [
+          "INRIA",
+          "Institut national de recherche en sciences et technologies du numérique",
+          "국립정보자동화제어연구소",
+          ""
+        ],
+        [
+          "IPSN",
+          "Institut de Protection et de Sûreté Nucléaire",
+          "원자력방호안전연구소",
+          "원자력청 산하"
+        ],
+        [
+          "IREP",
+          "Institut de recherche économique et de planification",
+          "경제연구기획원",
+          ""
+        ],
+        [
+          "LCPC",
+          "Laboratoire Central des Ponts et Chaussées",
+          "교량및도로중앙연구소",
+          ""
+        ],
+        [
+          "LRMF",
+          "Laboratoire de recherche des musées de France",
+          "프랑스박물관연구소",
+          ""
+        ],
+        [
+          "MAE",
+          "Ministère des Affaires Étrangères",
+          "외무부",
+          ""
+        ],
+        [
+          "MELTM",
+          "Ministère de l’Equipement, du Logement, des Transports et de la Mer",
+          "건설교통해양부",
+          ""
+        ],
+        [
+          "MEN",
+          "Ministère de l'Éducation nationale",
+          "교육부",
+          ""
+        ],
+        [
+          "MOI",
+          "Memorandum of Instruction",
+          "지침각서",
+          ""
+        ],
+        [
+          "MOST",
+          "Ministry of Science and Technology",
+          "과학기술처",
+          ""
+        ],
+        [
+          "MRT",
+          "Ministère de la Recherche et de la Technologie",
+          "연구기술부",
+          ""
+        ],
+        [
+          "NCM",
+          "Negociations Commerciales Multilaterales",
+          "다자간무역협상",
+          ""
+        ],
+        [
+          "NEI",
+          "Nouvelles Économies Industralisées",
+          "신흥공업국",
+          ""
+        ],
+        [
+          "NPI",
+          "Nuclear Power International",
+          "NPI",
+          "프랑스의 프라마톰사와 독일의 지멘스(Siemens) 계열 쿠우(KWU)社가 공동출자한 회사"
+        ],
+        [
+          "NSSS",
+          "Nuclear Steam Supply System",
+          "핵증기공급계통",
+          ""
+        ],
+        [
+          "OACI",
+          "Organisation de l'Aviation Civile Internationale",
+          "국제민간항공기구",
+          "영문명 ICAO"
+        ],
+        [
+          "OCDE",
+          "Organisation de Coopération et de Développement Économiques",
+          "경제개발협력기구",
+          "영문명 OECD"
+        ],
+        [
+          "OECF",
+          "Overseas Economic Cooperation Fund",
+          "해외경제협력기금",
+          "일본정부운용기금"
+        ],
+        [
+          "ONERA",
+          "Office National d'Etudes et de Recherches Aérospatiales",
+          "국가항공우주연구소",
+          ""
+        ],
+        [
+          "ONU",
+          "Organisation des Nations Unies",
+          "유엔(국제연합)",
+          "영문명 UN"
+        ],
+        [
+          "ORSTOM",
+          "Office de la Recherche Scientifique et Technique d'Outre-Mer",
+          "해외과학기술연구소",
+          ""
+        ],
+        [
+          "PECC",
+          "Pacific Economic Cooperation Conference",
+          "태평양경제협력회의",
+          ""
+        ],
+        [
+          "PME-PMI",
+          "Petites ou moyennes entreprises- Petites et moyennes industries",
+          "중소기업-중소산업",
+          ""
+        ],
+        [
+          "PVD",
+          "Pays en Voie de Développement",
+          "개발도상국",
+          ""
+        ],
+        [
+          "PWR",
+          "Pressurized Water Reactor",
+          "경수로형 원자로",
+          ""
+        ],
+        [
+          "RATP",
+          "Régie autonome des transports parisiens",
+          "파리교통공단",
+          ""
+        ],
+        [
+          "RDA",
+          "Regional Development Agency",
+          "지역개발청",
+          ""
+        ],
+        [
+          "RITA",
+          "Réseau Intégré de Transmissions Automatiques",
+          "자동통신통합네트워크",
+          ""
+        ],
+        [
+          "RPDC",
+          "République populaire et démocratique de Corée",
+          "북한",
+          ""
+        ],
+        [
+          "SCOA",
+          "Société Commerciale de l'Ouest Africain",
+          "서부아프리카무역회사",
+          ""
+        ],
+        [
+          "SERURE",
+          "Service des énergies renouvelables et de l'utilisation rationnelle",
+          "신재생에너지서비스 및 합리적이용과",
+          ""
+        ],
+        [
+          "SGCI",
+          "Le Secrétariat général du Comité interministériel",
+          "국무조정실",
+          ""
+        ],
+        [
+          "SIAR",
+          "Service de Surveillance Industrielle de l'Armement",
+          "방위산업감독청",
+          ""
+        ],
+        [
+          "SMIPC",
+          "Small and Medium Industry Promotion Corporation",
+          "중소기업진흥공단",
+          ""
+        ],
+        [
+          "SNCF",
+          "Société Nationale des Chemins de Fer Français",
+          "프랑스국영철도",
+          ""
+        ],
+        [
+          "SPG",
+          "Système de Préférences Généralisées",
+          "일반특혜관세제도",
+          "SGP (Système Généralisé e Préférences)라고도 표기됨"
+        ],
+        [
+          "SPGP",
+          "Systèmes de Production et Génie des Procédés",
+          "생산공정엔지니어링학",
+          ""
+        ],
+        [
+          "TNP",
+          "Traité sur la Non-Prolifération des armes nucléaires",
+          "핵확산금지조약",
+          "영문명 NPT"
+        ],
+        [
+          "UNC",
+          "Commandement des Nations Unies",
+          "유엔군사령부",
+          "영문명 United Nations Command"
+        ],
+        [
+          "URSS",
+          "L'Union des républiques socialistes soviétiques",
+          "소련",
+          ""
+        ],
+        [
+          "VAL",
+          "Véhicule Automatique Léger",
+          "자동경전철",
+          ""
+        ],
+        [
+          "VSNA",
+          "Volontaire au Service National Actif",
+          "공익근무자원자",
+          ""
+        ]
       ]
     }
   ]
