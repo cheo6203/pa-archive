@@ -901,6 +901,29 @@ function downloadTextFile(text, filename, mime){
   const blob = new Blob([text], {type: mime||'text/plain;charset=utf-8'});
   downloadBlob(blob, filename);
 }
+// 자료집 하나의 '전체' 데이터(발간사·부록·트리 구조 포함)를 export용 객체로 만드는 단일 소스.
+// 다운로드 지점이 여러 곳(허브 통합, 허브 개별, 자료집 상세 탭)이라도 전부 이 함수 하나만 거치게 해서
+// 필드 누락이 한 곳만 고쳐지고 다른 곳은 안 고쳐지는 문제를 원천 차단한다.
+function buildFullCollectionExport(c){
+  const out = {
+    id: c.id, name: c.name, shortName: c.shortName, period: c.period,
+    description: c.description, items: c.items,
+  };
+  if(c.publishedDate) out.publishedDate = c.publishedDate;
+  if(c.originalPdfUrl) out.originalPdfUrl = c.originalPdfUrl;
+  if(c.frontmatter) out.frontmatter = c.frontmatter;
+  if(c.reference && c.reference.length) out.reference = c.reference;
+  if(c.intro) out.intro = c.intro;
+  if(c.introPreface) out.introPreface = c.introPreface;
+  if(c.trees) out.trees = c.trees;
+  if(c.partSections) out.partSections = c.partSections;
+  if(c.presidentSections){ out.presidentSections = c.presidentSections; out.restricted = c.restricted; }
+  if(c.appendices){ out.appendices = c.appendices; out.introSections = c.introSections; }
+  if(c.appendixTables) out.appendixTables = c.appendixTables;
+  if(c.appendixImages) out.appendixImages = c.appendixImages;
+  if(c.appendixNote) out.appendixNote = c.appendixNote;
+  return out;
+}
 function renderDataSection(zone, c){
   const html = `
     <div class="data-panel">
@@ -938,8 +961,7 @@ function renderDataSection(zone, c){
     </div>`;
   zone.innerHTML = html;
   zone.querySelector('[data-dl="json"]').addEventListener('click', ()=>{
-    const exportObj = { collection: c.id, name: c.name, items: c.items };
-    downloadTextFile(JSON.stringify(exportObj, null, 2), `${c.id}.json`, 'application/json');
+    downloadTextFile(JSON.stringify(buildFullCollectionExport(c), null, 2), `${c.id}.json`, 'application/json');
   });
   zone.querySelector('[data-dl="csv"]').addEventListener('click', ()=>{
     downloadTextFile(c.csv, `${c.id}.csv`, 'text/csv;charset=utf-8');
@@ -949,17 +971,18 @@ function renderDataSection(zone, c){
   });
 }
 function renderApiDoc(c){
+  const BASE = 'https://cheo6203.github.io/pa-archive';
   return `<div class="api-doc">
     <h4>정적 JSON API</h4>
-    <p>GitHub Pages 등으로 배포하면 아래 형태의 엔드포인트로 데이터를 가져올 수 있습니다. (배포 경로에 맞게 base URL을 바꾸세요.)</p>
+    <p>아래 엔드포인트로 데이터를 가져올 수 있습니다.</p>
     <pre class="code"># 전체 자료집 메타
-GET /api/collections.json
+GET ${BASE}/api/collections.json
 
 # 특정 자료집 전체 항목
-GET /api/${c.id}.json
+GET ${BASE}/api/${c.id}.json
 
 # 예시 (fetch)
-fetch('https://&lt;YOUR_GH_PAGES&gt;/api/${c.id}.json')
+fetch('${BASE}/api/${c.id}.json')
   .then(r =&gt; r.json())
   .then(data =&gt; console.log(data.items.length));</pre>
     <p class="api-note">※ 배포용 API 파일은 저장소의 <code>/api</code> 폴더에 함께 생성됩니다.</p>
@@ -973,26 +996,7 @@ function buildCombinedJSON(){
   return JSON.stringify({
     title: "대통령기록관 해외수집기록물 온라인 아카이브",
     generated: new Date().toISOString().slice(0,10),
-    collections: DATA.collections.map(c=>{
-      const out = {
-        id: c.id, name: c.name, shortName: c.shortName, period: c.period,
-        description: c.description, itemCount: c.items.length, items: c.items,
-      };
-      if(c.publishedDate) out.publishedDate = c.publishedDate;
-      if(c.originalPdfUrl) out.originalPdfUrl = c.originalPdfUrl;
-      if(c.frontmatter) out.frontmatter = c.frontmatter;
-      if(c.reference && c.reference.length) out.reference = c.reference;
-      if(c.intro) out.intro = c.intro;
-      if(c.introPreface) out.introPreface = c.introPreface;
-      if(c.trees) out.trees = c.trees;
-      if(c.partSections) out.partSections = c.partSections;
-      if(c.presidentSections){ out.presidentSections = c.presidentSections; out.restricted = c.restricted; }
-      if(c.appendices){ out.appendices = c.appendices; out.introSections = c.introSections; }
-      if(c.appendixTables) out.appendixTables = c.appendixTables;
-      if(c.appendixImages) out.appendixImages = c.appendixImages;
-      if(c.appendixNote) out.appendixNote = c.appendixNote;
-      return out;
-    }),
+    collections: DATA.collections.map(c=>({ ...buildFullCollectionExport(c), itemCount: c.items.length })),
   }, null, 2);
 }
 function buildCombinedCSV(){
@@ -1091,24 +1095,7 @@ function renderDataHub(main){
   main.querySelectorAll('[data-hubjson]').forEach(el=>{
     el.addEventListener('click', ()=>{
       const c = collById[el.dataset.hubjson];
-      const out = {
-        id: c.id, name: c.name, shortName: c.shortName, period: c.period,
-        description: c.description, items: c.items,
-      };
-      if(c.publishedDate) out.publishedDate = c.publishedDate;
-      if(c.originalPdfUrl) out.originalPdfUrl = c.originalPdfUrl;
-      if(c.frontmatter) out.frontmatter = c.frontmatter;
-      if(c.reference && c.reference.length) out.reference = c.reference;
-      if(c.intro) out.intro = c.intro;
-      if(c.introPreface) out.introPreface = c.introPreface;
-      if(c.trees) out.trees = c.trees;
-      if(c.partSections) out.partSections = c.partSections;
-      if(c.presidentSections){ out.presidentSections = c.presidentSections; out.restricted = c.restricted; }
-      if(c.appendices){ out.appendices = c.appendices; out.introSections = c.introSections; }
-      if(c.appendixTables) out.appendixTables = c.appendixTables;
-      if(c.appendixImages) out.appendixImages = c.appendixImages;
-      if(c.appendixNote) out.appendixNote = c.appendixNote;
-      downloadTextFile(JSON.stringify(out, null, 2), `${c.id}.json`, 'application/json');
+      downloadTextFile(JSON.stringify(buildFullCollectionExport(c), null, 2), `${c.id}.json`, 'application/json');
     });
   });
   main.querySelectorAll('[data-hubcsv]').forEach(el=>{
@@ -1120,17 +1107,18 @@ function renderDataHub(main){
 }
 function renderApiDocHub(){
   const ids = DATA.collections.map(c=>c.id);
+  const BASE = 'https://cheo6203.github.io/pa-archive';
   return `<div class="api-doc">
     <h4>정적 JSON API</h4>
-    <p>GitHub Pages 등으로 배포하면 아래 엔드포인트로 데이터를 가져올 수 있습니다. (배포 경로에 맞게 base URL을 바꾸세요.)</p>
+    <p>아래 엔드포인트로 데이터를 가져올 수 있습니다.</p>
     <pre class="code"># 자료집 메타 목록
-GET /api/collections.json
+GET ${BASE}/api/collections.json
 
 # 자료집별 전체 항목
-${ids.map(id=>'GET /api/'+id+'.json').join('\n')}
+${ids.map(id=>`GET ${BASE}/api/${id}.json`).join('\n')}
 
 # 예시 (fetch)
-fetch('https://&lt;YOUR_GH_PAGES&gt;/api/collections.json')
+fetch('${BASE}/api/collections.json')
   .then(r =&gt; r.json())
   .then(meta =&gt; console.log(meta.collections));</pre>
     <p class="api-note">※ 배포용 API 파일은 저장소의 <code>/api</code> 폴더, CSV는 <code>/data</code> 폴더에 있습니다.</p>

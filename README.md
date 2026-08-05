@@ -44,7 +44,7 @@ GitHub Pages로 배포하면 온라인에서 접근할 수 있습니다.
 GitHub Pages 등으로 배포한 뒤 아래처럼 데이터를 가져올 수 있습니다.
 
 ```javascript
-const BASE = 'https://<YOUR_GH_PAGES>';
+const BASE = 'https://cheo6203.github.io/pa-archive';
 
 // 자료집 목록
 fetch(`${BASE}/api/collections.json`).then(r => r.json());
