@@ -35,6 +35,117 @@ function formatListText(raw){
   return paras.map(p=>`<p class="haeje-p list-line">${escapeHtml(p)}</p>`).join('');
 }
 function normalize(s){ return String(s||'').toLowerCase(); }
+
+// ── 본문 HTML 안의 텍스트 노드만 하이라이트(태그는 건드리지 않음) ──
+function highlightInHtml(html, q){
+  const qq = (q||'').trim();
+  if(!qq) return html;
+  const ql = qq.toLowerCase();
+  return String(html).split(/(<[^>]+>)/g).map(seg=>{
+    if(seg.charAt(0)==='<') return seg;
+    const lower = seg.toLowerCase();
+    let out=''; let i=0;
+    while(true){
+      const idx = lower.indexOf(ql, i);
+      if(idx===-1){ out += seg.slice(i); break; }
+      out += seg.slice(i, idx) + '<mark>' + seg.slice(idx, idx+qq.length) + '</mark>';
+      i = idx + qq.length;
+    }
+    return out;
+  }).join('');
+}
+
+// ── 클립보드 복사(실패 시 prompt로 대체) ──
+function copyToClipboard(text, btn, successLabel){
+  const original = btn ? btn.textContent : '';
+  const onDone = ()=>{ if(btn){ btn.textContent = successLabel||'✓ 복사됨'; setTimeout(()=>{ btn.textContent = original; }, 1600); } };
+  try{
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(onDone).catch(()=>{ try{ window.prompt('아래 내용을 복사하세요', text); }catch(e){} });
+      return;
+    }
+  }catch(e){}
+  try{ window.prompt('아래 내용을 복사하세요', text); }catch(e){}
+}
+
+// ── 영구링크: 특정 자료 상세화면 주소 ──
+function itemPermalink(it, c){
+  return location.origin + location.pathname + location.search + '#i/' + encodeURIComponent(c.id) + '/' + encodeURIComponent(it.id);
+}
+
+// ── 생산처 정보: 자료집마다 필드명이 달라 우선순위대로 탐색 ──
+function itemOrg(it){
+  if(!it.detail) return '';
+  return it.detail.대통령도서관 || it.detail.상위계층명 || '';
+}
+
+// ── 인용문 생성 ──
+function buildCitation(it, c){
+  const org = itemOrg(it);
+  const year = (it.detail && it.detail.생산년도) || it.year || '';
+  const today = new Date();
+  const dateStr = `${today.getFullYear()}.${String(today.getMonth()+1).padStart(2,'0')}.${String(today.getDate()).padStart(2,'0')}`;
+  const parts = [`대통령기록관 해외수집기록물 온라인 아카이브, 「${c.shortName}」`, `"${it.title}"`];
+  if(org) parts.push(org);
+  if(year) parts.push(String(year));
+  parts.push(`(접속일: ${dateStr})`);
+  parts.push(itemPermalink(it, c));
+  return parts.join(', ');
+}
+
+// ── 관심자료 담기(북마크, 로컬저장소) ──
+const BOOKMARK_KEY = 'paArchiveBookmarks_v1';
+function loadBookmarks(){
+  try{ return JSON.parse(localStorage.getItem(BOOKMARK_KEY)||'[]'); }catch(e){ return []; }
+}
+function saveBookmarks(list){
+  try{ localStorage.setItem(BOOKMARK_KEY, JSON.stringify(list)); }catch(e){}
+}
+function isBookmarked(collId, itemId){
+  return loadBookmarks().some(b=>b.collId===collId && b.itemId===itemId);
+}
+function toggleBookmark(it, c){
+  const list = loadBookmarks();
+  const idx = list.findIndex(b=>b.collId===c.id && b.itemId===it.id);
+  if(idx>=0){ list.splice(idx,1); } else {
+    list.push({ collId:c.id, itemId:it.id, title:it.title, collName:c.shortName,
+      type:it.type||'', year:String((it.detail&&it.detail.생산년도)||it.year||''), savedAt:new Date().toISOString() });
+  }
+  saveBookmarks(list);
+  return idx<0; // true면 지금 막 담긴 상태
+}
+
+// ── 관련 자료 추천: 같은 자료집 내 생산처/연도/유형이 겹치는 항목 ──
+function relatedItems(it, c, limit){
+  limit = limit || 5;
+  const org = itemOrg(it);
+  const yr = itemYear(it);
+  const scored = [];
+  c.items.forEach(x=>{
+    if(x.id===it.id) return;
+    let score = 0;
+    if(org && itemOrg(x)===org) score += 2;
+    const xy = itemYear(x);
+    if(yr!==null && xy===yr) score += 1;
+    if(it.type && x.type===it.type) score += 1;
+    if(score>0) scored.push({x, score});
+  });
+  scored.sort((a,b)=>b.score-a.score);
+  return scored.slice(0, limit).map(e=>e.x);
+}
+
+// ── 오늘의 기록: 날짜 시드 기반 결정적 랜덤 선택 ──
+function seededIndex(seedStr, max){
+  let h = 0;
+  for(let i=0;i<seedStr.length;i++){ h = (h*31 + seedStr.charCodeAt(i)) >>> 0; }
+  return max>0 ? h % max : 0;
+}
+function getTodayRecord(){
+  if(allItems.length===0) return null;
+  const today = new Date();
+  const seed = `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`;
+  return allItems[seededIndex(seed, allItems.length)];
+}
 function haejeSearchText(it){
   const h = it.haeje;
   if(!h) return '';
@@ -59,7 +170,7 @@ function highlightRaw(text, q){
 
 // ── 라우팅 상태 ──
 const view = { mode:'home', collId:null, tab:'items', q:'', page:1, pageSize:40, typeFilter:'all', treeIndex:0, section:null, subTab:null, appendixNum:1,
-  sScope:'all', sColl:'', sType:'', sYearFrom:'', sYearTo:'' };
+  sScope:'all', sColl:'', sType:'', sYearFrom:'', sYearTo:'', countryTab:null, orgTab:null };
 
 function go(mode, collId){
   view.mode = mode; view.collId = collId||null; view.q=''; view.page=1; view.typeFilter='all'; view.treeIndex=0;
@@ -103,6 +214,21 @@ function renderBreadcrumb(){
   }
   if(view.mode==='data'){
     html += `<span class="sep">›</span><span>데이터 제공</span>`;
+  }
+  if(view.mode==='country'){
+    html += `<span class="sep">›</span><span>국가별 보기${view.countryTab?' · '+escapeHtml(view.countryTab):''}</span>`;
+  }
+  if(view.mode==='orgs'){
+    html += `<span class="sep">›</span><span>타기관 보유 자료${view.orgTab?' · '+escapeHtml(view.orgTab):''}</span>`;
+  }
+  if(view.mode==='timeline'){
+    html += `<span class="sep">›</span><span>연표</span>`;
+  }
+  if(view.mode==='stats'){
+    html += `<span class="sep">›</span><span>자료 현황</span>`;
+  }
+  if(view.mode==='bookmarks'){
+    html += `<span class="sep">›</span><span>담은 자료</span>`;
   }
   bc.innerHTML = html;
   bc.querySelectorAll('[data-nav]').forEach(el=>{
@@ -192,6 +318,38 @@ function renderSidebar(){
     </button>
   </div>
   <div class="sidebar-group">
+    <button class="sidebar-coll ${view.mode==='country'?'active open':''}" data-countrymenu="1" tabindex="0" aria-expanded="${view.mode==='country'}">
+      <span>국가별 보기</span>
+      <span class="sc-caret" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+    </button>
+    ${view.mode==='country' ? `<div class="sidebar-sub">${COUNTRIES.map(c=>`<button data-countrytab="${escapeHtml(c)}" tabindex="0" class="${c===view.countryTab?'active':''}">${escapeHtml(c)}</button>`).join('')}</div>` : ''}
+  </div>
+  <div class="sidebar-group">
+    <button class="sidebar-coll ${view.mode==='orgs'?'active open':''}" data-orgsmenu="1" tabindex="0" aria-expanded="${view.mode==='orgs'}">
+      <span>타기관 보유 자료</span>
+      <span class="sc-caret" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+    </button>
+    ${view.mode==='orgs' ? `<div class="sidebar-sub">${ORG_LIST.map(o=>`<button data-orgtab="${escapeHtml(o)}" tabindex="0" class="${o===view.orgTab?'active':''}">${escapeHtml(o)}</button>`).join('')}</div>` : ''}
+  </div>
+  <div class="sidebar-group">
+    <button class="sidebar-coll ${view.mode==='timeline'?'active':''}" data-timelinemenu="1" tabindex="0">
+      <span>연표</span>
+      <span class="sc-caret" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="20" x2="4" y2="10"/><line x1="10" y1="20" x2="10" y2="4"/><line x1="16" y1="20" x2="16" y2="13"/><line x1="22" y1="20" x2="22" y2="7"/></svg></span>
+    </button>
+  </div>
+  <div class="sidebar-group">
+    <button class="sidebar-coll ${view.mode==='stats'?'active':''}" data-statsmenu="1" tabindex="0">
+      <span>자료 현황</span>
+      <span class="sc-caret" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="12" width="4" height="8"/><rect x="10" y="7" width="4" height="13"/><rect x="17" y="3" width="4" height="17"/></svg></span>
+    </button>
+  </div>
+  <div class="sidebar-group">
+    <button class="sidebar-coll ${view.mode==='bookmarks'?'active':''}" data-bookmarksmenu="1" tabindex="0">
+      <span>담은 자료${loadBookmarks().length ? ` (${loadBookmarks().length})` : ''}</span>
+      <span class="sc-caret" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></span>
+    </button>
+  </div>
+  <div class="sidebar-group">
     <button class="sidebar-coll ${view.mode==='data'?'active':''}" data-datamenu="1" tabindex="0">
       <span>데이터 제공</span>
       <span class="sc-caret" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span>
@@ -204,11 +362,51 @@ function renderSidebar(){
     am.addEventListener('click', actA);
     am.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); actA(); } });
   }
+  const cm = nav.querySelector('[data-countrymenu]');
+  if(cm){
+    const actC = ()=>{ view.mode='country'; view.collId=null; if(!view.countryTab) view.countryTab=COUNTRIES[0]; gsearchInput.value=''; render(); window.scrollTo({top:0}); };
+    cm.addEventListener('click', actC);
+    cm.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); actC(); } });
+  }
+  nav.querySelectorAll('[data-countrytab]').forEach(el=>{
+    const act = ()=>{ view.mode='country'; view.collId=null; view.countryTab=el.dataset.countrytab; gsearchInput.value=''; render(); window.scrollTo({top:0}); };
+    el.addEventListener('click', act);
+    el.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); act(); } });
+  });
+  const om = nav.querySelector('[data-orgsmenu]');
+  if(om){
+    const actO = ()=>{ view.mode='orgs'; view.collId=null; if(!view.orgTab) view.orgTab=ORG_LIST[0]; gsearchInput.value=''; render(); window.scrollTo({top:0}); };
+    om.addEventListener('click', actO);
+    om.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); actO(); } });
+  }
+  nav.querySelectorAll('[data-orgtab]').forEach(el=>{
+    const act = ()=>{ view.mode='orgs'; view.collId=null; view.orgTab=el.dataset.orgtab; gsearchInput.value=''; render(); window.scrollTo({top:0}); };
+    el.addEventListener('click', act);
+    el.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); act(); } });
+  });
   const dm = nav.querySelector('[data-datamenu]');
   if(dm){
     const actD = ()=>{ view.mode='data'; view.collId=null; gsearchInput.value=''; render(); window.scrollTo({top:0}); };
     dm.addEventListener('click', actD);
     dm.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); actD(); } });
+  }
+  const tm = nav.querySelector('[data-timelinemenu]');
+  if(tm){
+    const actT = ()=>{ view.mode='timeline'; view.collId=null; gsearchInput.value=''; render(); window.scrollTo({top:0}); };
+    tm.addEventListener('click', actT);
+    tm.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); actT(); } });
+  }
+  const sm = nav.querySelector('[data-statsmenu]');
+  if(sm){
+    const actS = ()=>{ view.mode='stats'; view.collId=null; gsearchInput.value=''; render(); window.scrollTo({top:0}); };
+    sm.addEventListener('click', actS);
+    sm.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); actS(); } });
+  }
+  const bm = nav.querySelector('[data-bookmarksmenu]');
+  if(bm){
+    const actB = ()=>{ view.mode='bookmarks'; view.collId=null; gsearchInput.value=''; render(); window.scrollTo({top:0}); };
+    bm.addEventListener('click', actB);
+    bm.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); actB(); } });
   }
   nav.querySelectorAll('.sidebar-coll[data-coll]').forEach(el=>{
     const act = ()=>{
@@ -260,6 +458,11 @@ function render(){
   else if(view.mode==='search') renderSearchResults(main);
   else if(view.mode==='data') renderDataHub(main);
   else if(view.mode==='archives') renderArchivesMap(main);
+  else if(view.mode==='country') renderCountryView(main);
+  else if(view.mode==='orgs') renderOrgView(main);
+  else if(view.mode==='timeline') renderTimelineView(main);
+  else if(view.mode==='stats') renderStatsView(main);
+  else if(view.mode==='bookmarks') renderBookmarksView(main);
   applyA11y();
 }
 // 동적 하위 렌더 후에도 tabindex 부여를 위해 MutationObserver 사용
@@ -267,16 +470,317 @@ new MutationObserver(()=>applyA11y()).observe(document.getElementById('main'), {
 
 // ── 수집 아카이브 소장처: 실제 세계지도(Leaflet + OpenStreetMap, API 키 불필요) ──
 const ARCHIVE_SITES = [
-  {name:'지미 카터 대통령도서관', place:'미국 조지아주 애틀랜타', lat:33.7627, lng:-84.3557, collId:'carter_haeje', section:null},
-  {name:'린든 존슨 대통령도서관', place:'미국 텍사스주 오스틴', lat:30.2861, lng:-97.7312, collId:'usa1_collection', section:'존슨'},
-  {name:'로널드 레이건 대통령도서관', place:'미국 캘리포니아주 시미밸리', lat:34.2592, lng:-118.8206, collId:'usa1_collection', section:'레이건'},
-  {name:'조지 H.W. 부시 대통령도서관', place:'미국 텍사스주 칼리지스테이션', lat:30.6006, lng:-96.3231, collId:'usa3_bush', section:null},
-  {name:'영국 국가기록원(TNA)', place:'영국 런던 큐(Kew)', lat:51.4796, lng:-0.2919, collId:'europe1', section:'영국 국가기록원(TNA)'},
-  {name:'프랑스 외무부 기록관', place:'프랑스 라 쿠르뇌브', lat:48.9186, lng:2.3854, collId:'europe1', section:'프랑스 외무부 기록관'},
-  {name:'독일연방기록청', place:'독일 코블렌츠', lat:50.3569, lng:7.5886, collId:'europe2', section:null},
-  {name:'프랑스 국립기록관', place:'프랑스 피에르피트쉬르센', lat:48.9575, lng:2.3639, collId:'france1', section:null},
-  {name:'프랑스 외무부기록관', place:'프랑스 라 쿠르뇌브', lat:48.9146, lng:2.3814, collId:'france2', section:null},
+  {name:'지미 카터 대통령도서관', place:'미국 조지아주 애틀랜타', lat:33.7627, lng:-84.3557, collId:'carter_haeje', section:null, country:'미국'},
+  {name:'린든 존슨 대통령도서관', place:'미국 텍사스주 오스틴', lat:30.2861, lng:-97.7312, collId:'usa1_collection', section:'존슨', country:'미국'},
+  {name:'로널드 레이건 대통령도서관', place:'미국 캘리포니아주 시미밸리', lat:34.2592, lng:-118.8206, collId:'usa1_collection', section:'레이건', country:'미국'},
+  {name:'조지 H.W. 부시 대통령도서관', place:'미국 텍사스주 칼리지스테이션', lat:30.6006, lng:-96.3231, collId:'usa3_bush', section:null, country:'미국'},
+  {name:'영국 국가기록원(TNA)', place:'영국 런던 큐(Kew)', lat:51.4796, lng:-0.2919, collId:'europe1', section:'영국 국가기록원(TNA)', country:'영국'},
+  {name:'프랑스 외무부 기록관', place:'프랑스 라 쿠르뇌브', lat:48.9186, lng:2.3854, collId:'europe1', section:'프랑스 외무부 기록관', country:'프랑스'},
+  {name:'독일연방기록청', place:'독일 코블렌츠', lat:50.3569, lng:7.5886, collId:'europe2', section:null, country:'독일'},
+  {name:'프랑스 국립기록관', place:'프랑스 피에르피트쉬르센', lat:48.9575, lng:2.3639, collId:'france1', section:null, country:'프랑스'},
+  {name:'프랑스 외무부기록관', place:'프랑스 라 쿠르뇌브', lat:48.9146, lng:2.3814, collId:'france2', section:null, country:'프랑스'},
 ];
+// 린든 존슨 도서관은 1.1~1.2 등 존슨 섹션(usa1_collection, section:'존슨')에 해당하며,
+// usa1_collection에는 '레이건' 외 '카터'(usa1 자료집 자체 내 카터 섹션)도 있을 수 있어
+// 국가별 집계는 country 필드가 아니라 아래 COUNTRY_GROUPS로 별도 관리한다.
+
+// ── 국가별 보기: 자료집(또는 자료집 내 특정 구간)을 국가별로 묶는 정의 ──
+// matchItem(it)이 true를 반환하는 품목만 해당 국가에 집계한다.
+const COUNTRIES = ['미국','영국','프랑스','독일'];
+const COUNTRY_GROUPS = {
+  '미국': [
+    {collId:'carter_haeje', label:'카터편 해제 (지미 카터 대통령도서관)', match:null},
+    {collId:'usa1_collection', label:'미국편1 (존슨·카터·레이건 대통령도서관)', match:null},
+    {collId:'usa2', label:'미국편2 (닉슨·포드 대통령도서관)', match:null},
+    {collId:'usa3_bush', label:'미국편3 (부시 대통령도서관)', match:null},
+  ],
+  '영국': [
+    {collId:'europe1', label:'유럽편1 중 영국 국가기록원(TNA) 소장분', match: it => String(it.id||'').startsWith('eu1-tna'), part:'영국 국가기록원(TNA)'},
+  ],
+  '프랑스': [
+    {collId:'europe1', label:'유럽편1 중 프랑스 외무부 기록관 소장분', match: it => String(it.id||'').startsWith('eu1-fr'), part:'프랑스 외무부 기록관'},
+    {collId:'france1', label:'프랑스편1 (프랑스 국립기록관)', match:null},
+    {collId:'france2', label:'프랑스편2 (프랑스 외무부기록관)', match:null},
+  ],
+  '독일': [
+    {collId:'europe2', label:'유럽편2 (독일연방기록청)', match:null},
+  ],
+};
+
+// ── 각 기관(국가기록원·국사편찬위원회·국립중앙도서관·외교부 등)이 발간·구축한
+// 해외수집기록물 관련 참고문헌. 2026년 조사 기준으로, 공식 홈페이지·보고서에서
+// 직접 확인된 내용만 수록했다. 항목별 소장 목록까지는 확인되지 않아 note에 한계를 밝혔다. ──
+const COUNTRY_REFERENCES = {
+  '공통': [
+    {inst:'국립중앙도서관', title:'해외 소재 한국 관련 자료 중장기 수집 정책 수립 연구 최종보고서(2022.12)', desc:'국내 기관의 해외 한국관련자료 수집 현황과 중장기 수집 정책 방향을 종합 조사한 정책연구보고서.', url:'https://www.oak.go.kr/nl-ir/handle/2020.oak/1175', note:null},
+    {inst:'국사편찬위원회', title:'해외사료총서 (전체 안내)', desc:'2002년부터 간행 중인 총서(2022년 기준 39책). 미국·일본·러시아·중국 소재 자료가 중심이며, 조사 대상국에 영국도 포함되었으나 영국 전담 권은 확인되지 않는다. 각 권 PDF를 무료로 내려받을 수 있다.', url:'https://db.history.go.kr/id/pbct_005_0110_0110', note:'미국편은 아래 개별 권으로 정리함. 일본·러시아·중국편은 본 아카이브의 국가 탭(미국·영국·프랑스·독일)과 무관해 생략함'},
+    {inst:'국사편찬위원회', title:'수집 자료 편람 시리즈', desc:'국가·지역별 수집 사료 현황을 정리한 편람. 예: 「국사편찬위원회 수집 일본 자료 편람」(2015.12).', url:'https://www.history.go.kr/', note:'미국·유럽 지역에 대한 편람 발간 여부는 추가 확인이 필요함'},
+  ],
+  '미국': [
+    {inst:'국립중앙도서관', title:'해외 한국관련자료 디지털컬렉션 — 미국 국립문서기록관리청(NARA)', desc:'2004년부터 NARA 소장 한국 관련 기록을 수집·디지털화. 2025년 말 기준 약 341만 면 제공.', url:'https://www.nl.go.kr/NL/contents/N20401010000.do', note:null},
+    {inst:'국립중앙도서관', title:'해외 한국관련자료 디지털컬렉션 — 미국 중앙정보국(CIA)', desc:'미국 CIA가 비밀해제한 한국 관련 문서를 디지털화하여 제공하는 컬렉션.', url:'https://www.nl.go.kr/NL/contents/N10200000000.do', note:null},
+    {inst:'외교부 외교사료관', title:'30년 경과 외교문서 공개', desc:'생산 후 30년이 지난 외교문서를 매년 정기 공개. 2026년 기준 제33차(1995년도분)까지 공개되었으며 한미관계 문서를 포함한다.', url:'https://diplomaticarchives.mofa.go.kr/', note:null},
+    {inst:'국사편찬위원회', title:'해외사료총서 2 미국소재 한국사 자료 조사보고 I -NARA 소장 RG 59·RG 84 외-', desc:'강영철, 정태헌, 허영란 | 2002-12-30 | ii, 469 p. · 페이지 내 PDF 다운로드 버튼 이용', url:'https://db.history.go.kr/id/pbct_005_0110_0020', note:null},
+    {inst:'국사편찬위원회', title:'해외사료총서 3 미국소재 한국사 자료 조사보고 II -NARA 소장 RG 332·RG 338 외-', desc:'강영철, 정태헌, 허영란 | 2002-12-30 | iv, 252 p. · 페이지 내 PDF 다운로드 버튼 이용', url:'https://db.history.go.kr/id/pbct_005_0110_0030', note:null},
+    {inst:'국사편찬위원회', title:'해외사료총서 4 미국소재 한국사 자료 조사보고 III -NARA 소장 RG 242 〈선별노획문서〉 외-', desc:'강영철, 정태헌, 허영란 | 2002-12-30 | vi, 571 p. · 페이지 내 PDF 다운로드 버튼 이용', url:'https://db.history.go.kr/id/pbct_005_0110_0040', note:null},
+    {inst:'국사편찬위원회', title:'해외사료총서 7 미국소재 한국사 자료 조사보고 IV', desc:'이상태, 김득중 | 2004-12-23 | iv, vii, 507 p. · 페이지 내 PDF 다운로드 버튼 이용', url:'https://db.history.go.kr/id/pbct_005_0110_0070', note:null},
+    {inst:'국사편찬위원회', title:'해외사료총서 13 미국소재 한국사 자료 조사보고 V', desc:'구선희, 윤덕영 외 | 2007-12-15 | x, 487 p. · 페이지 내 PDF 다운로드 버튼 이용', url:'https://db.history.go.kr/id/pbct_005_0110_0130', note:null},
+    {inst:'국사편찬위원회', title:'해외사료총서 17 한미 행정협정 문서 I(1954~1961)', desc:'구선희, 김점숙 | 2008-12-18 | xiii, 405 p. · 페이지 내 PDF 다운로드 버튼 이용', url:'https://db.history.go.kr/id/pbct_005_0110_0170', note:null},
+    {inst:'국사편찬위원회', title:'해외사료총서 20 한미 행정협정 문서 II(1962~1966)', desc:'장필기, 김점숙 | 2009-06-30 | xii, 407 p. · 페이지 내 PDF 다운로드 버튼 이용', url:'https://db.history.go.kr/id/pbct_005_0110_0200', note:null},
+    {inst:'국사편찬위원회', title:'해외사료총서 23 1950년대 한국경제 관련 미국 문서', desc:'나애자, 이상록 | 2011-12-31 | xxvii, 492 p. · 페이지 내 PDF 다운로드 버튼 이용', url:'https://db.history.go.kr/id/pbct_005_0110_0230', note:null},
+    {inst:'국사편찬위원회', title:'해외사료총서 24 한국에서 보낸 나날들', desc:'빈센트 브란트(저) · 나애자, 이상록, 김여두(기획) | 2011-12-31 | 252 p. · 페이지 내 PDF 다운로드 버튼 이용', url:'https://db.history.go.kr/id/pbct_005_0110_0240', note:null},
+    {inst:'국사편찬위원회', title:'해외사료총서 27 미국 NARA 소장 주한 미국공보원 영상자료 해제', desc:'김대길, 김광재, 고지훈 | 2013-12 | 281 p.+CD-ROM · 페이지 내 PDF 다운로드 버튼 이용', url:'https://db.history.go.kr/id/pbct_005_0110_0270', note:null},
+    {inst:'국사편찬위원회', title:'해외사료총서 29 미국소재 한국사 자료 조사보고Ⅵ', desc:'박진희, 이현진 | 2016-11-21 | 481 p. · 페이지 내 PDF 다운로드 버튼 이용', url:'https://db.history.go.kr/id/pbct_005_0110_0290', note:null},
+  ],
+  '영국': [
+    {inst:'국립중앙도서관', title:'해외 한국관련자료 수집 정책 (영국 소재분)', desc:'2022년 정책연구보고서에서 유럽 소재 한국 관련 자료 수집 필요성이 검토된 바 있다.', url:'https://www.oak.go.kr/nl-ir/handle/2020.oak/1175', note:'영국 국가기록원(TNA) 전용 상설 디지털컬렉션은 조사 시점 기준 확인되지 않음'},
+  ],
+  '프랑스': [
+    {inst:'국립중앙도서관', title:'해외 한국관련자료 수집 정책 (프랑스 소재분)', desc:'2022년 정책연구보고서에서 유럽 소재 한국 관련 자료 수집 필요성이 검토된 바 있다.', url:'https://www.oak.go.kr/nl-ir/handle/2020.oak/1175', note:'프랑스 외무부·국립기록관 전용 상설 디지털컬렉션은 조사 시점 기준 확인되지 않음'},
+  ],
+  '독일': [
+    {inst:'국립중앙도서관', title:'해외 한국관련자료 수집 정책 (독일 소재분)', desc:'2022년 정책연구보고서에서 유럽 소재 한국 관련 자료 수집 필요성이 검토된 바 있다.', url:'https://www.oak.go.kr/nl-ir/handle/2020.oak/1175', note:'독일연방기록청 전용 상설 디지털컬렉션은 조사 시점 기준 확인되지 않음'},
+  ],
+};
+// ── 타기관 보유 자료: COUNTRY_REFERENCES에 등장하는 기관명을 모아 목록화 ──
+const ORG_LIST = Array.from(new Set(Object.values(COUNTRY_REFERENCES).flat().map(r=>r.inst)));
+// ── 국가별 보기: 자료집 + 참고문헌을 국가 단위로 모아 보여준다 ──
+function renderCountryView(main){
+  if(!view.countryTab) view.countryTab = COUNTRIES[0];
+  const tab = view.countryTab;
+  const tabsHtml = COUNTRIES.map(c=>`<button class="country-tab ${c===tab?'active':''}" data-ctab="${escapeHtml(c)}">${escapeHtml(c)}</button>`).join('');
+
+  const groups = COUNTRY_GROUPS[tab] || [];
+  const collCards = groups.map(g=>{
+    const c = collById[g.collId];
+    if(!c) return '';
+    const count = g.match ? c.items.filter(g.match).length : c.items.length;
+    return `<div class="country-coll-card" data-coll="${c.id}" data-part="${g.part?escapeHtml(g.part):''}">
+      <span class="country-coll-name">${escapeHtml(g.label)}</span>
+      <span class="country-coll-count">${count.toLocaleString()}건 →</span>
+    </div>`;
+  }).join('');
+
+  const refs = [...(COUNTRY_REFERENCES[tab]||[])];
+  const refCards = refs.map(r=>`
+    <div class="ref-card">
+      <div class="ref-inst">${escapeHtml(r.inst)}</div>
+      <div class="ref-title">${escapeHtml(r.title)}</div>
+      <div class="ref-desc">${escapeHtml(r.desc)}</div>
+      ${r.note?`<div class="ref-note">※ ${escapeHtml(r.note)}</div>`:''}
+      ${r.url?`<a class="ref-link" href="${escapeHtml(r.url)}" target="_blank" rel="noopener">바로가기 →</a>`:''}
+    </div>`).join('');
+  const commonRefs = COUNTRY_REFERENCES['공통']||[];
+  const commonCards = commonRefs.map(r=>`
+    <div class="ref-card">
+      <div class="ref-inst">${escapeHtml(r.inst)}</div>
+      <div class="ref-title">${escapeHtml(r.title)}</div>
+      <div class="ref-desc">${escapeHtml(r.desc)}</div>
+      ${r.note?`<div class="ref-note">※ ${escapeHtml(r.note)}</div>`:''}
+      ${r.url?`<a class="ref-link" href="${escapeHtml(r.url)}" target="_blank" rel="noopener">바로가기 →</a>`:''}
+    </div>`).join('');
+
+  main.innerHTML = `
+    <div class="home-title">국가별로 본 아카이브의 자료집과, 각 기관(국가기록원·국사편찬위원회·국립중앙도서관·외교부 등)이 조사한 해외수집기록물 참고문헌을 함께 볼 수 있습니다.</div>
+    <div class="country-tabs">${tabsHtml}</div>
+    <div class="country-section-title">📁 본 아카이브의 ${escapeHtml(tab)} 소재 자료집</div>
+    <div class="country-coll-list">${collCards || '<div class="ref-note">해당 국가의 자료집이 아직 없습니다.</div>'}</div>
+    <div class="country-section-title">📚 ${escapeHtml(tab)} 관련 참고문헌 (타 기관 발간·구축 자료)</div>
+    ${refCards || '<div class="ref-note">조사된 참고문헌이 없습니다.</div>'}
+    <div class="country-section-title">📚 공통 참고문헌</div>
+    ${commonCards}
+  `;
+
+  main.querySelectorAll('[data-ctab]').forEach(el=>{
+    el.addEventListener('click', ()=>{ view.countryTab = el.dataset.ctab; render(); window.scrollTo({top:0}); });
+  });
+  main.querySelectorAll('.country-coll-card').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      go('collection', el.dataset.coll);
+      if(el.dataset.part){ view.section = el.dataset.part; view.subTab = 'tree'; }
+      render();
+      window.scrollTo({top:0});
+    });
+  });
+}
+
+// ── 타기관 보유 자료: 기관을 선택하면 COUNTRY_REFERENCES 전체(국가별+공통)에서
+// 해당 기관의 항목만 모아, 어느 국가 관련 자료인지 태그를 붙여 보여준다 ──
+function renderOrgView(main){
+  if(!view.orgTab) view.orgTab = ORG_LIST[0];
+  const org = view.orgTab;
+  const tabsHtml = ORG_LIST.map(o=>`<button class="country-tab ${o===org?'active':''}" data-otab="${escapeHtml(o)}">${escapeHtml(o)}</button>`).join('');
+
+  const items = [];
+  Object.keys(COUNTRY_REFERENCES).forEach(countryKey=>{
+    (COUNTRY_REFERENCES[countryKey]||[]).forEach(r=>{
+      if(r.inst === org) items.push({...r, countryKey});
+    });
+  });
+
+  const cards = items.map(r=>`
+    <div class="ref-card">
+      <div class="ref-inst">${escapeHtml(r.countryKey==='공통' ? '공통' : r.countryKey)}</div>
+      <div class="ref-title">${escapeHtml(r.title)}</div>
+      <div class="ref-desc">${escapeHtml(r.desc)}</div>
+      ${r.note?`<div class="ref-note">※ ${escapeHtml(r.note)}</div>`:''}
+      ${r.url?`<a class="ref-link" href="${escapeHtml(r.url)}" target="_blank" rel="noopener">바로가기 →</a>`:''}
+    </div>`).join('');
+
+  main.innerHTML = `
+    <div class="home-title">각 기관(국가기록원·국사편찬위원회·국립중앙도서관·외교부 등)별로 조사된 해외수집기록물 참고문헌을 모아 볼 수 있습니다.</div>
+    <div class="country-tabs">${tabsHtml}</div>
+    <div class="country-section-title">📚 ${escapeHtml(org)} 보유·발간 자료 (${items.length}건)</div>
+    ${cards || '<div class="ref-note">조사된 자료가 없습니다.</div>'}
+  `;
+
+  main.querySelectorAll('[data-otab]').forEach(el=>{
+    el.addEventListener('click', ()=>{ view.orgTab = el.dataset.otab; render(); window.scrollTo({top:0}); });
+  });
+}
+
+// ── 담은 자료(북마크): 로컬저장소 기반, 이 브라우저에서만 보임 ──
+function renderBookmarksView(main){
+  const list = loadBookmarks();
+  const rows = list.map(b=>`
+    <div class="bookmark-row" data-coll="${escapeHtml(b.collId)}" data-item="${escapeHtml(b.itemId)}">
+      <div class="bookmark-main">
+        <div class="bookmark-title">${escapeHtml(b.title)}</div>
+        <div class="bookmark-meta">${escapeHtml(b.collName)}${b.type?' · '+escapeHtml(b.type):''}${b.year?' · '+escapeHtml(b.year):''}</div>
+      </div>
+      <button class="bookmark-remove" data-remove="1">제거</button>
+    </div>`).join('');
+  main.innerHTML = `
+    <div class="home-title">직접 담아둔 자료 목록입니다. 이 목록은 이 브라우저에만 저장되며 다른 사람과 공유되지 않습니다.</div>
+    <div class="bookmark-actions">
+      <button class="dl-btn" id="exportBookmarksBtn" ${list.length?'':'disabled'}>⬇ CSV로 내보내기</button>
+      <button class="dl-btn" id="clearBookmarksBtn" ${list.length?'':'disabled'}>전체 비우기</button>
+    </div>
+    <div class="bookmark-list">${rows || '<div class="empty">아직 담아둔 자료가 없습니다. 자료 상세보기에서 "☆ 담기" 버튼을 눌러보세요.</div>'}</div>
+  `;
+  main.querySelectorAll('.bookmark-row').forEach(row=>{
+    row.addEventListener('click', (e)=>{
+      if(e.target && e.target.dataset && e.target.dataset.remove) return;
+      const c = collById[row.dataset.coll];
+      if(!c) return;
+      const it = c.items.find(x=>x.id===row.dataset.item);
+      if(it) openItemPanel(it, c);
+    });
+  });
+  main.querySelectorAll('[data-remove]').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      const row = btn.closest('.bookmark-row');
+      const list2 = loadBookmarks().filter(b=> !(b.collId===row.dataset.coll && b.itemId===row.dataset.item));
+      saveBookmarks(list2);
+      renderBookmarksView(main);
+      renderSidebar();
+    });
+  });
+  const exportBtn = document.getElementById('exportBookmarksBtn');
+  if(exportBtn && list.length) exportBtn.addEventListener('click', ()=> exportBookmarksCSV(list));
+  const clearBtn = document.getElementById('clearBookmarksBtn');
+  if(clearBtn && list.length){
+    clearBtn.addEventListener('click', ()=>{
+      let ok = true;
+      try{ ok = window.confirm('담은 자료를 모두 비우시겠습니까?'); }catch(e){ ok = true; }
+      if(!ok) return;
+      saveBookmarks([]);
+      renderBookmarksView(main);
+      renderSidebar();
+    });
+  }
+}
+function exportBookmarksCSV(list){
+  const header = ['자료집','제목','유형','연도','담은일시'];
+  const rows = list.map(b=>[b.collName, b.title, b.type||'', b.year||'', b.savedAt||'']);
+  const csv = [header, ...rows].map(r=> r.map(v=>{
+    const s = String(v==null?'':v).replace(/"/g,'""');
+    return /[",\n]/.test(s) ? `"${s}"` : s;
+  }).join(',')).join('\r\n');
+  const dataUri = 'data:text/csv;charset=utf-8,' + encodeURIComponent('﻿'+csv);
+  const a = document.createElement('a');
+  a.href = dataUri; a.download = '담은자료_'+new Date().toISOString().slice(0,10)+'.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+
+// ── 연표: 생산연도별 건수를 막대그래프로, 클릭하면 해당 연도로 상세검색 필터 ──
+function renderTimelineView(main){
+  const counts = {};
+  allItems.forEach(it=>{ const y=itemYear(it); if(y) counts[y]=(counts[y]||0)+1; });
+  const years = Object.keys(counts).map(Number).sort((a,b)=>a-b);
+  if(years.length===0){
+    main.innerHTML = `<div class="home-title">생산연도 정보가 있는 자료가 없습니다.</div>`;
+    return;
+  }
+  const minY = years[0], maxY = years[years.length-1];
+  const maxCount = Math.max(...years.map(y=>counts[y]));
+  const totalWithYear = years.reduce((s,y)=>s+counts[y],0);
+  const bars = years.map(y=>{
+    const h = Math.max(4, Math.round((counts[y]/maxCount)*160));
+    const showLabel = (y % 5 === 0) || y===minY || y===maxY;
+    return `<div class="tl-bar-wrap" data-year="${y}" tabindex="0" role="button" title="${y}년 · ${counts[y]}건">
+      <div class="tl-bar" style="height:${h}px"></div>
+      <div class="tl-year">${showLabel ? y : ''}</div>
+    </div>`;
+  }).join('');
+  main.innerHTML = `
+    <div class="home-title">전체 자료를 생산연도별로 늘어놓은 연표입니다. 막대를 클릭하면 해당 연도의 자료만 모아볼 수 있습니다. (${minY}년~${maxY}년, 연도 정보가 있는 자료 ${totalWithYear.toLocaleString()}건)</div>
+    <div class="timeline-wrap"><div class="timeline-chart">${bars}</div></div>
+  `;
+  main.querySelectorAll('.tl-bar-wrap').forEach(el=>{
+    const act = ()=>{
+      const y = el.dataset.year;
+      view.mode='search'; view.q=''; view.sScope='all'; view.sColl=''; view.sType=''; view.sYearFrom=y; view.sYearTo=y; view.page=1;
+      gsearchInput.value='';
+      render();
+      window.scrollTo({top:0});
+    };
+    el.addEventListener('click', act);
+    el.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); act(); } });
+  });
+}
+
+// ── 자료 현황(통계): 자료집별/연도별(10년단위)/생산처별 건수 ──
+function renderStatsView(main){
+  const collStats = DATA.collections.map(c=>({label:c.shortName, count:c.items.length})).sort((a,b)=>b.count-a.count);
+  const maxColl = Math.max(1, ...collStats.map(s=>s.count));
+  const statRow = (label, count, max)=>`
+    <div class="stat-row">
+      <div class="stat-label" title="${escapeHtml(label)}">${escapeHtml(label)}</div>
+      <div class="stat-bar-track"><div class="stat-bar" style="width:${(count/max*100).toFixed(1)}%"></div></div>
+      <div class="stat-count">${count.toLocaleString()}</div>
+    </div>`;
+  const collBars = collStats.map(s=>statRow(s.label, s.count, maxColl)).join('');
+
+  const decadeCounts = {};
+  allItems.forEach(it=>{ const y=itemYear(it); if(y){ const d=Math.floor(y/10)*10; decadeCounts[d]=(decadeCounts[d]||0)+1; } });
+  const decades = Object.keys(decadeCounts).map(Number).sort((a,b)=>a-b);
+  const maxDecade = Math.max(1, ...decades.map(d=>decadeCounts[d]));
+  const decadeBars = decades.map(d=>statRow(d+'년대', decadeCounts[d], maxDecade)).join('');
+
+  // 생산처(대통령도서관/상위계층명) 우선, 없으면 자료 유형(구조적 단계 표시는 제외)으로 집계
+  const STRUCTURAL_TYPES = new Set(['레벨1','레벨2','레벨3','레벨4','목록','세부기록물']);
+  const orgCounts = {};
+  allItems.forEach(it=>{
+    const org = itemOrg(it) || (it.type && !STRUCTURAL_TYPES.has(it.type) ? it.type : '');
+    if(org) orgCounts[org]=(orgCounts[org]||0)+1;
+  });
+  const orgTop = Object.entries(orgCounts).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  const maxOrg = Math.max(1, ...orgTop.map(e=>e[1]));
+  const orgBars = orgTop.map(([org,count])=>statRow(org, count, maxOrg)).join('');
+
+  main.innerHTML = `
+    <div class="home-title">전체 ${allItems.length.toLocaleString()}건의 자료를 자료집·생산연도·생산처별로 집계한 현황입니다.</div>
+    <div class="country-section-title">자료집별 건수</div>
+    <div class="stat-list">${collBars}</div>
+    <div class="country-section-title">생산연도별 건수 (10년 단위)</div>
+    <div class="stat-list">${decadeBars || '<div class="ref-note">연도 정보가 있는 자료가 없습니다.</div>'}</div>
+    <div class="country-section-title">생산처별 건수 (상위 10)</div>
+    <div class="stat-list">${orgBars || '<div class="ref-note">생산처 정보가 있는 자료가 없습니다.</div>'}</div>
+  `;
+}
+
 let archivesLeafletMap = null;
 function renderArchivesMap(main){
   let html = `<div class="home-title">한국 관련 기록물을 수집한 해외 소장처들입니다. 지도의 표시를 클릭하면 해당 기관에서 수집한 기록물을 볼 수 있습니다.</div>
@@ -343,8 +847,33 @@ function renderArchivesMap(main){
 
 }
 
+function renderTodayRecordWidget(){
+  const it = getTodayRecord();
+  if(!it) return '';
+  const c = collById[it._collId];
+  const org = itemOrg(it);
+  const year = (it.detail && it.detail.생산년도) || it.year || '';
+  return `<div class="today-record" data-coll="${escapeHtml(it._collId)}" data-item="${escapeHtml(it.id)}" tabindex="0" role="button">
+    <div class="today-record-label">오늘의 기록</div>
+    <div class="today-record-title">${escapeHtml(it.title)}</div>
+    <div class="today-record-meta">${escapeHtml(c?c.shortName:'')}${org?' · '+escapeHtml(org):''}${year?' · '+escapeHtml(String(year)):''}</div>
+  </div>`;
+}
+function wireTodayRecordWidget(main){
+  const el = main.querySelector('.today-record');
+  if(!el) return;
+  const act = ()=>{
+    const c = collById[el.dataset.coll];
+    if(!c) return;
+    const it = c.items.find(x=>x.id===el.dataset.item);
+    if(it) openItemPanel(it, c);
+  };
+  el.addEventListener('click', act);
+  el.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); act(); } });
+}
 function renderHome(main){
   let html = `<div class="home-title">자료집을 선택하면 원본 목차 구조 그대로 열람할 수 있습니다. 상단 검색창은 전체 자료집을 대상으로 합니다.</div>`;
+  html += renderTodayRecordWidget();
   html += `<div class="coll-grid">`;
   DATA.collections.forEach(c=>{
     html += `<div class="coll-card" data-coll="${c.id}">
@@ -359,6 +888,7 @@ function renderHome(main){
   });
   html += `</div>`;
   main.innerHTML = html;
+  wireTodayRecordWidget(main);
   main.querySelectorAll('[data-coll]').forEach(el=>{
     el.addEventListener('click', ()=> go('collection', el.dataset.coll));
   });
@@ -1304,7 +1834,11 @@ function renderSearchResults(main){
         <button class="dl-btn" id="advReset">초기화</button>
       </div>
     </div>
-    <div id="searchZone"></div>`;
+    <div id="searchZone"></div>
+    <div id="thesaurusZone"></div>
+    <div id="historyDbZone"></div>
+    <div id="nlZone"></div>
+    <div id="externalZone"></div>`;
 
   const run = ()=>{
     view.q = document.getElementById('advQ').value;
@@ -1335,6 +1869,131 @@ function renderSearchList(){
   if(view.sYearTo){ const yt=parseInt(view.sYearTo); items = items.filter(i=>{const y=itemYear(i); return y!==null && y<=yt;}); }
   if(q) items = items.filter(i=> itemFieldText(i, scope).includes(q));
   renderPagedRows(zone, items, view.q, true);
+  renderThesaurusMatch(view.q);
+  renderHistoryDbSearch(view.q);
+  renderNlSearch(view.q);
+  renderExternalArchivesSearch(view.q);
+}
+
+// ── 국립중앙도서관 해외한국관련자료(NARA·CIA·CIS·헝가리·튀르키예) 연계검색 ──
+// 공식 오픈API는 일반 소장자료(도서·고문헌 등) 대상이라 디지털컬렉션 포함 여부가
+// 확인되지 않아, 대신 사이트 자체 통합검색이 쓰는 search.do URL로 바로가기를 제공한다.
+// (이 URL은 공식 문서화된 API가 아니라 사이트 검색창을 그대로 재현한 것이므로,
+// 결과를 이 화면으로 가져오지 않고 국립중앙도서관 사이트로 안내한다.)
+function renderNlSearch(query){
+  const zone = document.getElementById('nlZone');
+  if(!zone) return;
+  const q = (query||'').trim();
+  if(!q){ zone.innerHTML=''; return; }
+  const url = `https://www.nl.go.kr/NL/contents/search.do?category=${encodeURIComponent('해외한국관련자료')}&srchTarget=total&pageNum=1&pageSize=10&kwd=${encodeURIComponent(q)}`;
+  zone.innerHTML = `<div class="ext-search-box">
+    <div class="ext-search-head">📖 국립중앙도서관 해외한국관련자료 연계검색</div>
+    <p class="ext-search-note">국립중앙도서관의 해외한국관련자료(NARA·CIA·독립국가연합·헝가리·튀르키예 디지털컬렉션)는 전용 공개 API가 없어 결과를 이 화면에 바로 가져올 수 없습니다. 아래 버튼을 누르면 국립중앙도서관에서 "${escapeHtml(q)}" 검색 결과를 바로 확인할 수 있습니다.</p>
+    <a class="dl-btn" href="${url}" target="_blank" rel="noopener">국립중앙도서관 해외한국관련자료에서 "${escapeHtml(q)}" 검색 →</a>
+  </div>`;
+}
+
+// ── 국사편찬위원회 한국사데이터베이스(해외사료총서 등) 연계검색 ──
+// db.history.go.kr은 국가기록원과 달리 공개 검색 API가 없어 실시간 결과를 가져올 수 없다.
+// 대신 통합검색 URL로 바로 연결되는 바로가기를 제공한다.
+function renderHistoryDbSearch(query){
+  const zone = document.getElementById('historyDbZone');
+  if(!zone) return;
+  const q = (query||'').trim();
+  if(!q){ zone.innerHTML=''; return; }
+  const url = `https://db.history.go.kr/search/searchTotalResult.do?totalWord=${encodeURIComponent(q)}`;
+  zone.innerHTML = `<div class="ext-search-box">
+    <div class="ext-search-head">🏛️ 국사편찬위원회 한국사데이터베이스 연계검색</div>
+    <p class="ext-search-note">한국사데이터베이스(해외사료총서 등)는 공개 검색 API가 없어 결과를 이 화면에 바로 가져올 수 없습니다. 아래 버튼을 누르면 한국사데이터베이스에서 "${escapeHtml(q)}" 검색 결과를 바로 확인할 수 있습니다.</p>
+    <a class="dl-btn" href="${url}" target="_blank" rel="noopener">한국사데이터베이스에서 "${escapeHtml(q)}" 검색 →</a>
+  </div>`;
+}
+
+// ── 국사편찬위원회 한국역사용어시소러스: 용어 기본정보 매칭(현대 시대 용어, 로컬 데이터) ──
+// 유의어·관련어 연계 데이터는 공공데이터포털 제공분에 없어, 검색어와 일치하는 용어의
+// 기본정보(한자/연도/분류/설명/참고문헌)만 보조적으로 보여줍니다.
+function renderThesaurusMatch(query){
+  const zone = document.getElementById('thesaurusZone');
+  if(!zone) return;
+  const q = (query||'').trim();
+  if(!q || typeof NIKH_THESAURUS === 'undefined'){ zone.innerHTML=''; return; }
+  const ql = q.toLowerCase();
+  let matches = NIKH_THESAURUS.filter(t=> t.t.toLowerCase()===ql);
+  if(matches.length===0) matches = NIKH_THESAURUS.filter(t=> t.t.toLowerCase().includes(ql) || ql.includes(t.t.toLowerCase()));
+  matches = matches.slice(0,3);
+  if(matches.length===0){ zone.innerHTML=''; return; }
+  const cards = matches.map(t=>`
+    <div class="thesaurus-card">
+      <div class="thesaurus-term">${escapeHtml(t.t)}${t.h?` <span class="thesaurus-hanja">(${escapeHtml(t.h)})</span>`:''}${t.y?` <span class="thesaurus-year">· ${escapeHtml(t.y)}</span>`:''}</div>
+      ${t.c?`<div class="thesaurus-cat">${escapeHtml(t.c.split('>').join(' › '))}</div>`:''}
+      ${t.d?`<div class="thesaurus-desc">${escapeHtml(t.d)}</div>`:''}
+      ${t.s?`<div class="thesaurus-src">출처: ${escapeHtml(t.s)}</div>`:''}
+    </div>`).join('');
+  zone.innerHTML = `<div class="ext-search-box thesaurus-box">
+    <div class="ext-search-head">📚 국사편찬위원회 한국역사용어시소러스 — 용어 기본정보</div>
+    <p class="ext-search-note">국사편찬위원회가 구축한 한국역사용어시소러스(현대 시대) 중 검색어와 일치하는 용어의 기본정보입니다. 유의어·관련어 연계 정보는 포함되어 있지 않습니다.</p>
+    <div class="thesaurus-list">${cards}</div>
+    <a class="ext-more-link" href="https://db.history.go.kr/" target="_blank" rel="noopener">국사편찬위원회 한국사데이터베이스에서 더 보기 →</a>
+  </div>`;
+}
+
+// ── 외부 기관 연계검색: 국가기록원 나라기록물 검색서비스 OpenAPI ──
+// 발급받은 인증키를 아래에 넣으면 활성화됩니다. (공공데이터포털에서 '나라기록물 검색 서비스' 개발계정 신청)
+const NATIONAL_ARCHIVES_API_KEY = '98bbf4b7f8dd32a86e78f925901456642a70753177bf1b4d495ff11d091273f3';
+let _naSearchToken = 0;
+function renderExternalArchivesSearch(query){
+  const zone = document.getElementById('externalZone');
+  if(!zone) return;
+  const q = (query||'').trim();
+  if(!q){ zone.innerHTML = ''; return; }
+  if(!NATIONAL_ARCHIVES_API_KEY || NATIONAL_ARCHIVES_API_KEY.indexOf('__')===0){
+    zone.innerHTML = `<div class="ext-search-box">
+      <div class="ext-search-head">🔗 국가기록원 연계검색</div>
+      <p class="ext-search-note">인증키가 아직 설정되지 않았습니다. 대신 국가기록원에서 "${escapeHtml(q)}"를 직접 검색해볼 수 있습니다.</p>
+      <a class="dl-btn" href="https://www.archives.go.kr/next/newsearch/listSubjectSearch.do?query=${encodeURIComponent(q)}" target="_blank" rel="noopener">국가기록원에서 "${escapeHtml(q)}" 검색 →</a>
+    </div>`;
+    return;
+  }
+  const myToken = ++_naSearchToken;
+  zone.innerHTML = `<div class="ext-search-box"><div class="ext-search-head">🔗 국가기록원 연계검색</div><p class="ext-search-note">검색 중…</p></div>`;
+  const url = `https://apis.data.go.kr/1741050/openapi/searcharc?serviceKey=${encodeURIComponent(NATIONAL_ARCHIVES_API_KEY)}&query=${encodeURIComponent(q)}&display=8&pageNo=1`;
+  fetch(url).then(r=>{
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    return r.text();
+  }).then(text=>{
+    if(myToken !== _naSearchToken) return; // 더 최신 검색이 진행 중이면 이 결과는 버림
+    const xml = new DOMParser().parseFromString(text, 'text/xml');
+    if(xml.querySelector('parsererror')) throw new Error('parse error');
+    const items = Array.from(xml.querySelectorAll('item'));
+    const total = xml.querySelector('total')?.textContent || items.length;
+    if(items.length===0){
+      zone.innerHTML = `<div class="ext-search-box"><div class="ext-search-head">🔗 국가기록원 연계검색</div><p class="ext-search-note">"${escapeHtml(q)}"에 대한 국가기록원 검색 결과가 없습니다.</p></div>`;
+      return;
+    }
+    const cards = items.map(it=>{
+      const g = sel => it.querySelector(sel)?.textContent || '';
+      const title = g('title'); const prod = g('prod_name'); const year = g('prod_year');
+      const isOpen = g('is_open'); const link = g('link'); const online = g('online_reading');
+      const openLabel = isOpen==='1' ? '공개' : isOpen==='2' ? '부분공개' : isOpen==='3' ? '비공개' : '';
+      return `<a class="ext-result-card" href="${escapeHtml(link)}" target="_blank" rel="noopener">
+        <div class="ext-result-title">${escapeHtml(title)}</div>
+        <div class="ext-result-meta">${escapeHtml(prod)}${year?' · '+escapeHtml(year)+'년':''}${openLabel?' · '+openLabel:''}${online==='Y'?' · 원문열람가능':''}</div>
+      </a>`;
+    }).join('');
+    zone.innerHTML = `<div class="ext-search-box">
+      <div class="ext-search-head">🔗 국가기록원 연계검색 <span class="ext-result-count">(전체 ${escapeHtml(String(total))}건 중 ${items.length}건)</span></div>
+      <p class="ext-search-note">아래는 이 사이트가 아니라 <b>국가기록원(archives.go.kr)</b>이 소장한 기록물 검색 결과입니다. 클릭하면 국가기록원 사이트로 이동합니다.</p>
+      <div class="ext-result-list">${cards}</div>
+      <a class="ext-more-link" href="https://www.archives.go.kr/next/newsearch/listSubjectSearch.do?query=${encodeURIComponent(q)}" target="_blank" rel="noopener">국가기록원에서 전체 결과 더 보기 →</a>
+    </div>`;
+  }).catch(err=>{
+    if(myToken !== _naSearchToken) return;
+    zone.innerHTML = `<div class="ext-search-box">
+      <div class="ext-search-head">🔗 국가기록원 연계검색</div>
+      <p class="ext-search-note">지금은 자동으로 불러올 수 없습니다. 아래 링크로 직접 검색해 주세요.</p>
+      <a class="dl-btn" href="https://www.archives.go.kr/next/newsearch/listSubjectSearch.do?query=${encodeURIComponent(q)}" target="_blank" rel="noopener">국가기록원에서 "${escapeHtml(q)}" 검색 →</a>
+    </div>`;
+  });
 }
 
 const META_EXCLUDE = new Set(['번호','레벨','시작페이지','목차페이지','물리페이지']);
@@ -1468,24 +2127,68 @@ function openItemPanel(it, c){
   const pageNum = it.detail && (it.detail.시작페이지 || it.detail.원본페이지);
   const hasPageImg = pageNum && c.pageImages && c.pageImages[String(pageNum)];
 
+  // 검색 결과에서 들어온 경우, 상세보기 본문에도 검색어를 하이라이트
+  const hlQ = (view.mode==='search' && view.q) ? view.q : '';
+  haejeHtml = highlightInHtml(haejeHtml, hlQ);
+
+  const related = relatedItems(it, c, 5);
+  const relatedHtml = related.length ? `
+    <div class="related-box">
+      <div class="related-head">관련 자료 (같은 생산처·연도·유형)</div>
+      <div class="related-list">${related.map(r=>`
+        <div class="related-item" data-relid="${escapeHtml(r.id)}">
+          <div class="related-title">${escapeHtml(r.title)}</div>
+          <div class="related-meta">${escapeHtml(r.type||'')}${r.year?' · '+escapeHtml(String(r.year)):''}</div>
+        </div>`).join('')}</div>
+    </div>` : '';
+
+  const bookmarked = isBookmarked(c.id, it.id);
+
   document.getElementById('panelBody').innerHTML = `
     <div class="p-badge">${escapeHtml(c.shortName)}</div>
-    <h2>${escapeHtml(it.title)}</h2>
-    ${it.subtitle && it.subtitle !== it.title ? `<div class="p-subtitle">${escapeHtml(it.subtitle)}</div>` : ''}
+    <h2>${highlightRaw(it.title, hlQ)}</h2>
+    ${it.subtitle && it.subtitle !== it.title ? `<div class="p-subtitle">${highlightRaw(it.subtitle, hlQ)}</div>` : ''}
     <div class="download-row">
       <button class="dl-btn" id="dlJsonBtn">⬇ JSON</button>
       ${hasPageImg ? `<button class="dl-btn" id="dlPdfBtn">⬇ PDF (원문 p.${pageNum})</button>` : ''}
+      <button class="dl-btn" id="bookmarkBtn">${bookmarked ? '★ 담음' : '☆ 담기'}</button>
+      <button class="dl-btn" id="copyLinkBtn">🔗 링크 복사</button>
+      <button class="dl-btn" id="citeBtn">❝ 인용하기</button>
     </div>
     ${renderInfoTable(it)}
     ${pageImgHtml}
     <div class="haeje-box">${haejeHtml}</div>
+    ${relatedHtml}
   `;
   openOverlay();
+  try{ history.replaceState(null, '', '#i/'+encodeURIComponent(c.id)+'/'+encodeURIComponent(it.id)); }catch(e){}
   document.getElementById('dlJsonBtn').addEventListener('click', ()=> downloadItemJSON(it, c));
   const pdfBtn = document.getElementById('dlPdfBtn');
   if(pdfBtn){
     pdfBtn.addEventListener('click', ()=> downloadItemPDF(it, c, c.pageImages[String(pageNum)], pdfBtn));
   }
+  const bmBtn = document.getElementById('bookmarkBtn');
+  if(bmBtn){
+    bmBtn.addEventListener('click', ()=>{
+      const nowOn = toggleBookmark(it, c);
+      bmBtn.textContent = nowOn ? '★ 담음' : '☆ 담기';
+      renderSidebar();
+    });
+  }
+  const copyLinkBtn = document.getElementById('copyLinkBtn');
+  if(copyLinkBtn){
+    copyLinkBtn.addEventListener('click', ()=> copyToClipboard(itemPermalink(it, c), copyLinkBtn, '✓ 링크 복사됨'));
+  }
+  const citeBtn = document.getElementById('citeBtn');
+  if(citeBtn){
+    citeBtn.addEventListener('click', ()=> copyToClipboard(buildCitation(it, c), citeBtn, '✓ 인용문 복사됨'));
+  }
+  document.querySelectorAll('.related-item').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const relIt = c.items.find(x=>x.id===el.dataset.relid);
+      if(relIt) openItemPanel(relIt, c);
+    });
+  });
   const toggle = document.querySelector('.orig-toggle');
   if(toggle){
     toggle.addEventListener('click', ()=>{
@@ -1514,6 +2217,9 @@ function openOverlay(){
 function closeOverlay(){
   const ov = document.getElementById('overlay');
   ov.classList.remove('open'); ov.setAttribute('aria-hidden','true');
+  if(location.hash && location.hash.indexOf('#i/')===0){
+    try{ history.replaceState(null, '', location.pathname + location.search); }catch(e){}
+  }
 }
 document.getElementById('closePanel').onclick = closeOverlay;
 document.getElementById('overlay').addEventListener('click', (e)=>{ if(e.target.id==='overlay') closeOverlay(); });
@@ -1541,4 +2247,20 @@ document.getElementById('gsearchInput').addEventListener('input', (e)=>{
 
 document.getElementById('gcount').textContent = allItems.length.toLocaleString()+'건 전체';
 
-go('home');
+// ── 영구링크로 들어온 경우 해당 자료 상세보기를 바로 열기 ──
+function openFromHash(){
+  try{
+    const raw = (location.hash||'').replace(/^#\/?/, '');
+    if(!raw) return false;
+    const parts = raw.split('/').map(p=>{ try{ return decodeURIComponent(p); }catch(e){ return p; } });
+    if(parts[0]!=='i' || !parts[1] || !parts[2]) return false;
+    const c = collById[parts[1]];
+    if(!c) return false;
+    const it = c.items.find(x=>x.id===parts[2]);
+    if(!it) return false;
+    go('collection', c.id);
+    openItemPanel(it, c);
+    return true;
+  }catch(e){ return false; }
+}
+if(!openFromHash()) go('home');
